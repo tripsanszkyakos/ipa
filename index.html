@@ -26,7 +26,13 @@
 <section>
   <h6>Vizsga kérdések</h6>
   <div style="overflow-x:auto;">
-    <table style="width:100%; border-collapse:collapse; font-size:0.6em; line-height:1.1; margin:0;">
+    <table style="
+        width:100%;
+        border-collapse:collapse;
+        table-layout:fixed;
+        font-size:0.1em;
+        line-height:1.1;
+      ">    <table style="width:100%; border-collapse:collapse; font-size:0.5em; line-height:1.1; margin:0;">
       <thead>
         <tr>
           <th style="border:1px solid #ccc; padding:1px 3px; text-align:left;">Szám</th>
@@ -802,14 +808,28 @@ int *p = &n;    /* p az n címe */</code></pre>
     </small>
     <small class="fragment fade-in-then-out">
       <p>Egyszintű indirekció</p>
-      <pre><code class="language-c" data-trim data-line-numbers>// egyszintű indirekció
+      <pre style="
+      width:100%;
+      box-sizing:border-box;
+      margin:0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: hidden;
+  "><code class="language-c" data-trim data-line-numbers>// egyszintű indirekció
 int x  = 7;
 int *px = &x;       // indirekt hozzáférés: *px
 printf("%d", *px);  /* 7 */</code></pre>
     </small>
     <small class="fragment fade-in-then-out">
       <p>Többszintű indirekció</p>
-      <pre><code class="language-c" data-trim data-line-numbers>// többszintű indirekció
+      <pre style="
+      width:100%;
+      box-sizing:border-box;
+      margin:0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: hidden;
+  "><code class="language-c" data-trim data-line-numbers>// többszintű indirekció
 int  v   = 3;
 int *pv  = &v;      // &v → int*
 int **ppv = &pv;    // &pv → int**
@@ -820,7 +840,14 @@ int **ppv = &pv;    // &pv → int**
     <small class="fragment fade-in-then-out">
       <p>Indirekció függvénymutatóval
         </p>
-      <pre><code class="language-c" data-trim data-line-numbers>int add(int a, int b) { return a + b; }
+        <pre style="
+        width:100%;
+        box-sizing:border-box;
+        margin:0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-x: hidden;
+    "><code class="language-c" data-trim data-line-numbers>int add(int a, int b) { return a + b; }
 int (*op)(int,int) = add;// op egy függvény címe
 int sum = op(2,3);       // indirekt hívás
         </code></pre>
@@ -939,7 +966,7 @@ int sum = op(2,3);       // indirekt hívás
   <h6>50.	Ismertesse a tömbök használatánál előforduló komplexitás-típusokat! Mondjon példát arra a műveletre, amelyik adott komplexitású!</h6>
   <div class="r-stack">
     <small class="fragment fade-in-then-out">
-      <table style="font-size:83%; border:1px solid #000; border-collapse: collapse;">
+      <table style="font-size:70%; border:1px solid #000; border-collapse: collapse;">
         <thead>
           <tr>
             <th style="border:1px solid #000; padding:4px;">Jelölés</th>
@@ -997,7 +1024,7 @@ int sum = op(2,3);       // indirekt hívás
   <h6>51.	Ismertesse a tömbből való kicímzés veszélyeit!</h6>
   <div class="r-stack">
     <small class="fragment fade-in-then-out"> 
-      <table style="font-size:90%; border:1px solid #000; border-collapse:collapse;">
+      <table style="font-size:80%; border:1px solid #000; border-collapse:collapse;">
         <thead>
           <tr>
             <th style="border:1px solid #000; padding:4px;">Jelenség</th>
@@ -1065,22 +1092,33 @@ int sum = op(2,3);       // indirekt hívás
 
       <br><br>- a végén * (dereferencia) adja vissza az adott elem lvalue-ját.
     </small>
-    <div class="fragment fade-in-then-out"> Következmény:
-      <pre>
-        <code class="language-c" data-trim data-line-numbers>
-          #include &lt;stdio.h&gt;
-            int main(void)
-            {
-              int tomb[5] = { 1,2,3,4,5 };
-            
-              for (int i = 0; i < 5; i++) {
-                printf("%d\t", tomb[i]);
-                printf("%d\n", i[tomb]);
-              }
-              return 0;
-            }
-        </code>
+    <div class="fragment fade-in-then-out">
+      Következmény:
+      <pre style="
+          width: 100%;                  /* teljes szélesség */
+          box-sizing: border-box;       /* padding is beleszámítson */
+          white-space: pre-wrap;        /* tördelés engedélyezése */
+          word-break: break-word;       /* hosszú szavak tördelése */
+          overflow-x: hidden;           /* vízszintes görgetés elrejtése */
+          margin: 0;                    /* ha van default margó, eltűnik */
+      ">
+    <code class="language-c" data-trim data-line-numbers>
+    #include &lt;stdio.h&gt;
+    int main(void)
+    {
+      int tomb[5] = { 1,2,3,4,5 };
+      for (int i = 0; i < 5; i++) {
+        printf("%d\t", tomb[i]);
+        printf("%d\n", i[tomb]);
+      }
+      return 0;
+    }
+    </code>
       </pre>
+    </div>
+    
+    
+    <div class="fragment fade-in-then-out">Kimenet:
       <pre>
       <code class="language-c" data-trim>
        1  1
