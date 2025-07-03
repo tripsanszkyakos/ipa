@@ -11,18 +11,18 @@
   <link rel="stylesheet" href="monokai.css">
 </head>
 <body>
-
   <div class="reveal">
     <div class="slides">
       <section>
         <h2>Labor 11</h2>
-        <p>C programozással kapcsolatos vizsgakérdések (16 db)</p>
-        <p>Bináris fileok</p>
-        <p>Teljesítménymérés</p>
-        <p>Programtervezés, kódszervezés</p>
-        <p>sima C kód optimalizálása CPU-ra</p>
+        <p>I. C programozással kapcsolatos vizsgakérdések</p>
+        <p>(16 db)</p>
+        <p>II. Bináris fileok</p>
+        <p>III. Teljesítménymérés</p>
+        <p>IV. Programtervezés, kódszervezés</p>
+        <p>V. sima C kód optimalizálása CPU-ra</p>
     </section>
-<!--Vizsgakérdésk -->
+<!--Vizsgakérdések -->
 <section>
   <h6>Vizsga kérdések</h6>
   <div style="overflow-x:auto;">
@@ -140,706 +140,683 @@
     </table>
   </div>
 </section>
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>23.	Ismertesse a veremtár működését! C nyelvű programok futása közben hol van szerepe a veremtárnak?</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out">A veremtár egy LIFO (“last-in – first-out”) elven működő, folyamatosan növekvő / csökkenő memóriaterület. 
-      <br>Minden processzhez (és sok OS-ben minden szálhoz) a kernel létrehoz egy saját veremtár-szegmenst. 
-      <br>A CPU egy veremmutató (RSP/SP) és rendszerint egy keretmutató (RBP, FP) regiszterrel tartja nyilván a verem aktuális csúcsát, illetve az aktuális stack-keret (stack frame) báziscímét.
-    </small>
-    <small class="fragment fade-in-then-out">
-      <div style="overflow-x:auto;">
-      <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
-        <thead>
-          <tr>
-            <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Folyamat</th>
-            <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Mit pakolunk a verembe?</th>
-            <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Miért fontos?</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="border:1px solid #ccc; padding:2px 4px;">Függvényhívás (<code>call f</code>)</td>
-            <td style="border:1px solid #ccc; padding:2px 4px;">
-              – Visszatérési cím<br>
-              – Régi keretmutató<br>
-              – Paraméterek<br>
-              – Caller-save regiszterek
-            </td>
-            <td style="border:1px solid #ccc; padding:2px 4px;">
-              Így tud a program visszatérni a hívó kódsorára, és megőrizzük a hívó állapotát.
-            </td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ccc; padding:2px 4px;">Lokális (automatikus) változók</td>
-            <td style="border:1px solid #ccc; padding:2px 4px;">
-              – int x 
-              <br>- char buf[64] stb.
-            </td>
-            <td style="border:1px solid #ccc; padding:2px 4px;">
-              Élettartamuk csak a függvényhívás idejére szól, ezért ideális őket a veremben tárolni.
-            </td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ccc; padding:2px 4px;">Dinamikus, de rövid életű igény</td>
-            <td style="border:1px solid #ccc; padding:2px 4px;">
-              – <code>alloca()</code>-val foglalt memória<br>
-              – C99 VLA (változó-méretű tömb)
-            </td>
-            <td style="border:1px solid #ccc; padding:2px 4px;">
-              Gyorsabb, mint a heap; felszabadul automatikusan a keret kilépésekor.
-            </td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ccc; padding:2px 4px;">Visszatérés (<code>ret</code>)</td>
-            <td style="border:1px solid #ccc; padding:2px 4px;">–</td>
-            <td style="border:1px solid #ccc; padding:2px 4px;">
-              A visszatérési cím kerül az IP-be; 
-              <br>a veremmutató visszaugrik az előző keretre.
-              <br>(IP = Instruction Pointer)
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    </small>
-      <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
+  <!--23. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>23.	Ismertesse a veremtár működését! C nyelvű programok futása közben hol van szerepe a veremtárnak?</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out">A veremtár egy LIFO (“last-in – first-out”) elven működő, folyamatosan növekvő / csökkenő memóriaterület.<br>
+        <br>Minden processzhez (és sok OS-ben minden szálhoz) a kernel létrehoz egy saját veremtár-szegmenst. <br>
+        <br>A CPU egy veremmutató (RSP/SP) és rendszerint egy keretmutató (RBP, FP) regiszterrel tartja nyilván a verem aktuális csúcsát, illetve az aktuális stack-keret (stack frame) báziscímét.
+      </small>
+      <small class="fragment fade-in-then-out">
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
+            <thead>
+              <tr>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Folyamat</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Mit pakolunk a verembe?</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Miért fontos?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Függvényhívás (<code>call f</code>)</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  – Visszatérési cím<br>
+                  – Régi keretmutató<br>
+                  – Paraméterek<br>
+                  – Caller-save regiszterek
+                </td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  Így tud a program visszatérni a hívó kódsorára, és megőrizzük a hívó állapotát.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Lokális (automatikus) változók</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  – int x 
+                  <br>- char buf[64] stb.
+                </td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  Élettartamuk csak a függvényhívás idejére szól, ezért ideális őket a veremben tárolni.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Dinamikus, de rövid életű igény</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  – <code>alloca()</code>-val foglalt memória<br>
+                  – C99 VLA (változó-méretű tömb)
+                </td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  Gyorsabb, mint a heap; felszabadul automatikusan a keret kilépésekor.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Visszatérés (<code>ret</code>)</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">–</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  A visszatérési cím kerül az IP-be; 
+                  <br>a veremmutató visszaugrik az előző keretre.
+                  <br>(IP = Instruction Pointer)
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </small>
+      <!-- Kis kódrészlet -->
+      <pre class="fragment fade-in-then-out">
+        <code class="language-c" data-trim data-line-numbers>
       //Automatikus változók kezelése 
     
         void foo(void) {
           int a = 5;           // a ‘a’ a veremben él
           char tmp[100];       // buffer a veremben,
-      }                        // kilépéskor a teljes blokk “eltűnik”            
-          </code></pre>
-    <small class="fragment fade-in-then-out">
-      <h1>Rekurzió</h1>
-      Minden rekurzív hívás új stack-keretet kap,
-        <br>tehát a lokális változók példányonként elkülönülnek.
-        <br>Mély rekurziónál ez vezethet stack overflow-hoz
-        <br>(pl. végtelen rekurzió vagy túl nagy automatikus tömb).
-    </small>
-    <small class="fragment fade-in-then-out">
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.4;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jellemző</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Verem (stack)</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Kupac (heap)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Allokáció</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Implicit (utasításokkal)</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Explicites: malloc/free, new/delete</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Sebesség</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Nagyon gyors (pointer ± Δ)</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Lassabb (syscall, lista/algoritmus)</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Méret</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Korlátozott (MB-tól tízes MB)</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Gyakran a teljes virtuális címtartomány</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Élettartam</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Függvényhívás idejéig</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Amíg manuálisan fel nem szabadítjuk</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Túlcímzés kockázata</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Stack overflow</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Memory leak</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-    </small>
-
-   </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>35.	Ismertesse a C nyelvű forráskód fordítási és futtatási folyamatát!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out">
-      <h2>1. Előfeldolgozás</h2>
-      Makrók kibontása, #include-ok beillesztése, föltételek (#if) értékelése
-      <br>Kimenet: .i (tiszta C-forrás)
-    </small>
-    <small class="fragment fade-in-then-out">
-      <h2>2. Fordítás</h2>
-      A C-kódot géptől független köztes (legtöbbször assembly) formára alakítja, közben szint- és típuselemzés, optimalizálás
-      <br>Kimenet: .s (assembly)
-    </small>
-    <small class="fragment fade-in-then-out">
-      <h2>3. Assembleálás</h2>
-      Az assembly-t tárgykóddá szereli; minden fordítási egység külön szimbólumtáblát kap
-      <br>Kimenet: .o (objektum)
-    </small>            
-    <small class="fragment fade-in-then-out">
-      <h2>4. Linkelés</h2>
-      Összefűzi az összes .o-t és a megadott statikus/dinamikus könyvtárakat; címet rendel szimbólumokhoz, beteszi a futásidejű crt0/crt1 kódot
-      <br>Kimenet: .exe/ELF/PE futtatható
-    </small>            
-    <small class="fragment fade-in-then-out">
-      <h2>5. Betöltés (load)</h2>
-      Futtatáskor az OS létrehoz egy folyamatot, betérképezi az exe szegmenseit, a din. linker pedig behúzza a megosztott könyvtárakat, elvégzi a relokációt
-      <br>Kimenet: Procesz memóriaképe
-    </small>            
-    <small class="fragment fade-in-then-out">
-      <h2>6. Végrehajtás</h2>
-      A belépési pont (_start) beállítja a stack-et, majd hívja a main()-t. A visszatéréskor exit() rendszerhívás zárja a folyamatot
-      <br>Kimenet: .s (assembly)
-    </small>            
+      }         // kilépéskor a teljes blokk “eltűnik”            
+        </code>
+      </pre>
+      <!-- Rekurzió két fontos pont -->
+      <small class="fragment fade-in-then-out">
+        <h1>Rekurzió</h1>
+        Minden rekurzív hívás új stack-keretet kap,
+          <br>tehát a lokális változók példányonként elkülönülnek.<br>
+          <br>Mély rekurziónál ez vezethet stack overflow-hoz
+          <br>(pl. végtelen rekurzió vagy túl nagy automatikus tömb).
+      </small>
+      <!-- Verem vs Heap összefoglaló összehasonlító táblázat -->
+      <small class="fragment fade-in-then-out">
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.4;">
+            <thead>
+              <tr>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jellemző</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Verem (stack)</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Kupac (heap)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Allokáció</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Implicit (utasításokkal)</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Explicites: malloc/free, new/delete</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Sebesség</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Nagyon gyors (pointer ± Δ)</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Lassabb (syscall, lista/algoritmus)</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Méret</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Korlátozott (MB-tól tízes MB)</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Gyakran a teljes virtuális címtartomány</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Élettartam</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Függvényhívás idejéig</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Amíg manuálisan fel nem szabadítjuk</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Túlcímzés kockázata</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Stack overflow</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Memory leak</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </small>
     </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>43.	Ismertesse a C nyelv alapvető típusait, tárolási méretükkel! Hol vannak ezek a méretek definiálva (típusonként eltérő)?</h6>
-
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out"> 
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Kategória</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Típus</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">ISO C minimum (bit)</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jellemző méret ILP32 (32-bites rendszerek)</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jellemző méret LP64 (klasszikus 64-bites Unix / Linux)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Egész</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">char / signed char / unsigned char</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">8</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">1 bájt</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">1 bájt</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">short / unsigned short</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">16</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">2 bájt</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">2 bájt</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">int / unsigned int</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">16</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">long / unsigned long</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">32</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">long long / unsigned long long</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">64</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Logikai</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">_Bool</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">1*</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">1 bájt</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">1 bájt</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Lebegőpontos</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">float</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">≥32</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt (IEEE-754 single)</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">double</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">≥64</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt (IEEE-754 double)</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">long double</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">≥64</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">12/16 bájt**</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">16 bájt***</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Mutató</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">void*, int*, stb.</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">—</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
-            </tr>
-          </tbody>
-        </table>
+  </section>
+  <!--35. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>35.	Ismertesse a C nyelvű forráskód fordítási és futtatási folyamatát!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out">
+        <h2>1. Előfeldolgozás</h2>
+        Makrók kibontása, #include-ok beillesztése, föltételek (#if) értékelése
+        <br>Kimenet: .i (tiszta C-forrás)
+      </small>
+      <small class="fragment fade-in-then-out">
+        <h2>2. Fordítás</h2>
+        A C-kódot géptől független köztes (legtöbbször assembly) formára alakítja, közben szint- és típuselemzés, optimalizálás
+        <br>Kimenet: .s (assembly)
+      </small>
+      <small class="fragment fade-in-then-out">
+        <h2>3. Assembleálás</h2>
+        Az assembly-t tárgykóddá szereli; minden fordítási egység külön szimbólumtáblát kap
+        <br>Kimenet: .o (objektum)
+      </small>            
+      <small class="fragment fade-in-then-out">
+        <h2>4. Linkelés</h2>
+        Összefűzi az összes .o-t és a megadott statikus/dinamikus könyvtárakat; címet rendel szimbólumokhoz, beteszi a futásidejű crt0/crt1 kódot
+        <br>Kimenet: .exe/ELF/PE futtatható
+      </small>            
+      <small class="fragment fade-in-then-out">
+        <h2>5. Betöltés (load)</h2>
+        Futtatáskor az OS létrehoz egy folyamatot, betérképezi az exe szegmenseit, a din. linker pedig behúzza a megosztott könyvtárakat, elvégzi a relokációt
+        <br>Kimenet: Procesz memóriaképe
+      </small>            
+      <small class="fragment fade-in-then-out">
+        <h2>6. Végrehajtás</h2>
+        A belépési pont (_start) beállítja a stack-et, majd hívja a main()-t. A visszatéréskor exit() rendszerhívás zárja a folyamatot
+        <br>Kimenet: .s (assembly)
+      </small>            
       </div>
-      * A szabvány csak annyit garantál, hogy _Bool-nak 1 byte a tárolási egysége és hogy értékei 0 vagy 1.
-      <br>A konkrét sizeof-értékek implementáció-függők! A fenti táblázat csupán a leggyakoribb két adatmodell példája.
-    </small>
-    <small class="fragment fade-in-then-out">Hol van pontosan „rögzítve”, hogy mekkora egy típus?
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Típuscsalád</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Hol találod a szabványos határokat?</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Mire jó?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Egészek</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                <code>&lt;limits.h&gt;</code> – CHAR_BIT, INT_MAX, LONG_MAX, stb.
-              </td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                Fordítási időben megmondják a típus legnagyobb és legkisebb értékét, így közvetve a méretét is (pl. ha INT_MAX = 2 147 483 647 ⇒ 32 bit).
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Lebegőpontos</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                <code>&lt;float.h&gt;</code> – FLT_MANT_DIG, DBL_MAX, stb.
-              </td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                A mantissza mérete, kitevő tartomány és lekerekítési mód határait adja meg – ezekből következtethetsz a bájt-méretre.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Rögzített szélességű típusok</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                <code>&lt;stdint.h&gt;</code> – int32_t, uint64_t, INT32_MAX, …
-              </td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                Csak akkor vannak definiálva, ha az adott pontos szélesség létezik a platformon.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">C11 generikus korlátok</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                <code>&lt;stdint.h&gt;</code> – INT_FAST32_MAX, INTPTR_MAX, stb.
-              </td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                „Legalább ekkora” vagy „leggyorsabb legalább ekkora” egész­típusok lekérdezése.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Futás-függő lekérdezés</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                <code>sizeof(type)</code> kifejezés
-              </td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                Garantáltan fordítási időben számolja ki a tényleges bájt-méretet – hordozható mód.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>            
-    </small>            
-    </div>
-</section>
+  </section>
+  <!--43. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>43.	Ismertesse a C nyelv alapvető típusait, tárolási méretükkel! Hol vannak ezek a méretek definiálva (típusonként eltérő)?</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out"> 
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
+            <thead>
+              <tr>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Kategória</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Típus</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">ISO C minimum (bit)</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jellemző méret ILP32 (32-bites rendszerek)</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jellemző méret LP64 (klasszikus 64-bites Unix / Linux)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Egész</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">char / signed char / unsigned char</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">8</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">1 bájt</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">1 bájt</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;"></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">short / unsigned short</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">16</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">2 bájt</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">2 bájt</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;"></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">int / unsigned int</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">16</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;"></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">long / unsigned long</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">32</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;"></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">long long / unsigned long long</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">64</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Logikai</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">_Bool</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">1*</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">1 bájt</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">1 bájt</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Lebegőpontos</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">float</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">≥32</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt (IEEE-754 single)</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;"></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">double</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">≥64</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt (IEEE-754 double)</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;"></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">long double</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">≥64</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">12/16 bájt**</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">16 bájt***</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Mutató</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">void*, int*, stb.</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">—</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">4 bájt</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">8 bájt</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        * A szabvány csak annyit garantál, hogy _Bool-nak 1 byte a tárolási egysége és hogy értékei 0 vagy 1.
+        <br>A konkrét sizeof-értékek implementáció-függők! A fenti táblázat csupán a leggyakoribb két adatmodell példája.
+      </small>
+      <small class="fragment fade-in-then-out">Hol van pontosan „rögzítve”, hogy mekkora egy típus?
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
+            <thead>
+              <tr>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Típuscsalád</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Hol találod a szabványos határokat?</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Mire jó?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Egészek</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  <code>&lt;limits.h&gt;</code> – CHAR_BIT, INT_MAX, LONG_MAX, stb.
+                </td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  Fordítási időben megmondják a típus legnagyobb és legkisebb értékét, így közvetve a méretét is (pl. ha INT_MAX = 2 147 483 647 ⇒ 32 bit).
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Lebegőpontos</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  <code>&lt;float.h&gt;</code> – FLT_MANT_DIG, DBL_MAX, stb.
+                </td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  A mantissza mérete, kitevő tartomány és lekerekítési mód határait adja meg – ezekből következtethetsz a bájt-méretre.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Rögzített szélességű típusok</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  <code>&lt;stdint.h&gt;</code> – int32_t, uint64_t, INT32_MAX, …
+                </td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  Csak akkor vannak definiálva, ha az adott pontos szélesség létezik a platformon.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">C11 generikus korlátok</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  <code>&lt;stdint.h&gt;</code> – INT_FAST32_MAX, INTPTR_MAX, stb.
+                </td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  „Legalább ekkora” vagy „leggyorsabb legalább ekkora” egész­típusok lekérdezése.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Futás-függő lekérdezés</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  <code>sizeof(type)</code> kifejezés
+                </td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  Garantáltan fordítási időben számolja ki a tényleges bájt-méretet – hordozható mód.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>            
+      </small>            
+      </div>
+  </section>
+  <!--44. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>44.	Ismertesse példával a pre- és posztinkrementálás közti különbséget!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out">Pre-increment ( ++i ): először növel, aztán az új értéket adja vissza.
 
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>44.	Ismertesse példával a pre- és posztinkrementálás közti különbséget!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out">Pre-increment ( ++i ): először növel, aztán az új értéket adja vissza.
+        <br>Poszt-increment ( i++ ): először az eredeti értéket adja vissza, utána növel.</small>
+        <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
+          #include &lt;stdio.h&gt;
 
-      <br>Poszt-increment ( i++ ): először az eredeti értéket adja vissza, utána növel.</small>
+            int main(void) {
+                int a = 5;
+                int b = ++a;   /* pre-increment  */
+                int c = 5;
+                int d = c++;   /* post-increment */
+            
+                printf("a = %d, b = %d\n", a, b);
+                printf("c = %d, d = %d\n", c, d);
+                return 0;
+            }                          
+              </code></pre>  
+              <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
+                //kimenet
+                a = 6, b = 6
+                c = 6, d = 5                               
+                    </code></pre>                 
+      </div>
+  </section>
+  <!--45. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>45.	Ismertesse a C nyelv háromoperandusú operátorát!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out">
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
+            <thead>
+              <tr>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Elem</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jelentés</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Szintaxis</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  <code>feltétel ? kifejezés_if_true : kifejezés_if_false</code>
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Értékelés</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  – A feltétel először és pontosan egyszer fut le.<br>
+                  – Ha logikailag igaz (≠ 0), a bal oldali kifejezés eredménye lesz az egész kifejezés értéke.<br>
+                  – Ha hamis (0), a jobb oldali kifejezés értéke lesz a végeredmény.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Típus-szabály</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  A két „ág” típusát a fordító közös típusra konvertálja
+                  <br>(aritmetikai szabályok, egyező pointer- vagy struktúratípus, stb.).<br>
+                  A kifejezés eredménye lvalue lehet, ha mindkét ág ugyanazt az lvalue-típust adja.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Precedencia</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  Alacsonyabb, mint a logikai <code>&&</code> és <code>||</code> operátoroké.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Oldalhatás</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  Csak a kiválasztott ág fut le → a rövidre zárás (short-circuit)
+                  <br>miatt mellékhatásokkal is biztonságosabb, mint egy kétszer értékelt if-kifejezés.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+      </small>
       <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
-        #include &lt;stdio.h&gt;
-
-          int main(void) {
-              int a = 5;
-              int b = ++a;   /* pre-increment  */
-              int c = 5;
-              int d = c++;   /* post-increment */
-          
-              printf("a = %d, b = %d\n", a, b);
-              printf("c = %d, d = %d\n", c, d);
-              return 0;
-          }                          
+        //egyszerű pl.
+        int min = (a < b) ? a : b;               
             </code></pre>  
-            <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
-              //kimenet
-              a = 6, b = 6
-              c = 6, d = 5                               
-                  </code></pre>                 
-    </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>45.	Ismertesse a C nyelv háromoperandusú operátorát!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out">
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Elem</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jelentés</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Szintaxis</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                <code>feltétel ? kifejezés_if_true : kifejezés_if_false</code>
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Értékelés</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                – A feltétel először és pontosan egyszer fut le.<br>
-                – Ha logikailag igaz (≠ 0), a bal oldali kifejezés eredménye lesz az egész kifejezés értéke.<br>
-                – Ha hamis (0), a jobb oldali kifejezés értéke lesz a végeredmény.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Típus-szabály</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                A két „ág” típusát a fordító közös típusra konvertálja
-                <br>(aritmetikai szabályok, egyező pointer- vagy struktúratípus, stb.).<br>
-                A kifejezés eredménye lvalue lehet, ha mindkét ág ugyanazt az lvalue-típust adja.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Precedencia</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                Alacsonyabb, mint a logikai <code>&&</code> és <code>||</code> operátoroké.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Oldalhatás</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                Csak a kiválasztott ág fut le → a rövidre zárás (short-circuit)
-                <br>miatt mellékhatásokkal is biztonságosabb, mint egy kétszer értékelt if-kifejezés.
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
+        //bonyolultabb pl1.
+        ((x < 0) ? x : y) = 0;   
+        /* csak akkor érvényes, ha x és y is int változó */
+        //Ha x < 0 igaz, x lesz kinullázva, különben y.
+      </code></pre>        
+      <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
+        //bonyolultabb pl2.
+        printf("%s\n", flag ? "OK" : "FAIL");
+        //Formázott kiírás választott szöveggel.
+      </code></pre>
+      <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
+        //bonyolultabb pl3.
+        #define ABS(x) ((x) < 0 ? -(x) : (x))            
+        //Érték-visszaadó „inline” funkció.
+      </code></pre>             
       </div>
-      
-    </small>
-    <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
-      //egyszerű pl.
-      int min = (a < b) ? a : b;               
-          </code></pre>  
-    <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
-      //bonyolultabb pl1.
-      ((x < 0) ? x : y) = 0;   /* csak akkor érvényes, ha x és y is int változó */
-      //Ha x < 0 igaz, x lesz kinullázva, különben y.
-    </code></pre>        
-    <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
-      //bonyolultabb pl2.
-      printf("%s\n", flag ? "OK" : "FAIL");
-      //Formázott kiírás választott szöveggel.
-    </code></pre>
-    <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
-      //bonyolultabb pl3.
-      #define ABS(x) ((x) < 0 ? -(x) : (x))            
-      //Érték-visszaadó „inline” funkció.
-    </code></pre>             
-    </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>46.	Ismertesse a „break” utasítás szerepét a „switch” utasításban!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out">A break; megszakítja a switch blokkot, és a vezérlés közvetlenül a switch utáni első utasításra ugrik.</small>
-    <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
-      switch (c) {
-        case 'a':
-            puts("alma");
-            break;              /* ← itt lépünk ki a switch-ből */
-        case 'b':
-            puts("banán");
-            break;
-    }
-    puts("itt folytatjuk");     /* ide érkezik a vezérlés */
-    
-    </code></pre>
-    <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
-      //"fall through"
-      switch (n) {
-        case 1:
-            puts("egy");
-            /* nincs break → lefut a 2. ág kódja is */
-        case 2:
-            puts("kettő");
-            break;
-    }          
-    </code></pre>             
-    </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>47.	Ismertesse példával a C nyelvben alkalmazható bitműveleteket! Miért volt szükség logikai műveletekre a bitműveletek mellett?</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out">Bitműveleti operátorok C-ben
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Operátor</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jelentés</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Példa (32-bites unsigned)</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Eredmény (hex)</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Rövid magyarázat</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>&amp;</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">bit-AND</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>0xF0 &amp; 0xCC</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">0xC0</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Csak a mindkét operandusban 1-es bitek maradnak.</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>|</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">bit-OR</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>0x0F | 0x30</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">0x3F</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">1-es, ha bármelyik operandus bitje 1.</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>^</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">bit-XOR</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>0xAA ^ 0xFF</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">0x55</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">1-es, ha a bitek különböznek.</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>~</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">bit-NOT (negáció)</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>~0x0000000F</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">0xFFFFFFF0</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Minden bitet megfordít.</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>&lt;&lt;</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">balra tolás</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>0x01 &lt;&lt; 4</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">0x10</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Bitenkénti szorzás 2-vel az eltolás számával.</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>&gt;&gt;</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">jobbra tolás</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>0x80 &gt;&gt; 3</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">0x10 (logikai)</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                Osztás 2-vel. Előjelesnél aritmetikai vagy logikai eltolás implementáció-függő.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-    </small>
-    <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
-      uint8_t flags = 0b00000101;   // bit0 = ON, bit2 = ON
-      flags |= 0b00001000;          // 3. bit bekapcsolása (OR)
-      flags &= ~0b00000001;         // 0. bit kikapcsolása (AND + NOT)
-      if ((flags & 0b00001000) != 0) {
-          /* a 3. bit most aktív */
+  </section>
+  <!--46. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>46.	Ismertesse a „break” utasítás szerepét a „switch” utasításban!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out">A break; megszakítja a switch blokkot, és a vezérlés közvetlenül a switch utáni első utasításra ugrik.</small>
+      <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
+        switch (c) {
+          case 'a':
+              puts("alma");
+              break;              /* ← itt lépünk ki a switch-ből */
+          case 'b':
+              puts("banán");
+              break;
       }
-    </code></pre>      
-    <small class="fragment fade-in-then-out">
-      Logikai operátorok és miért kellettek
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Operátor</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jelentés</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Példa</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Kiértékelés</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Eredmény értéke</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>&&</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">logikai ÉS</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>a && b</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">short-circuit: ha <code>a</code> hamis, <code>b</code> nem fut le</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">0 vagy 1</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>||</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">logikai VAGY</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>x > 0 || y < 0</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">short-circuit: ha <code>x > 0</code> igaz, <code>y < 0</code> nem fut</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">0 vagy 1</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>!</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">logikai NEM</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>!ptr</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">—</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">0 vagy 1</td>
-            </tr>
-          </tbody>
-        </table>
+      puts("itt folytatjuk");     /* ide érkezik a vezérlés */
+      
+      </code></pre>
+      <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
+        //"fall through"
+        switch (n) {
+          case 1:
+              puts("egy");
+              /* nincs break → lefut a 2. ág kódja is */
+          case 2:
+              puts("kettő");
+              break;
+      }          
+      </code></pre>             
       </div>
-    </small>   
-    <small class="fragment fade-in-then-out">
-      Miért nem elég a bitművelet?
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.2; margin:0;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Szempont</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Leírás</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Egész kifejezések igaz-hamis tesztelése</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                A feltételes utasítások (<code>if</code>, <code>while</code>, <code>for</code>) egész kifejezések igazságértékét kérik.  
-                A <code>&&</code> és <code>||</code> pontosan erre szolgál: egyetlen igaz/hamis eredményt (0 / 1) ad, nem pedig bit-mintát.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Rövidre zárás (short-circuit)</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                <code>if (p && *p == 'x')</code> – ha <code>p</code> <code>NULL</code>, a jobb oldal meg sem próbál dereferálni, így elkerüljük a futási hibát.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Bit-AND vs. logikai AND</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                A <code>&amp;</code> mindkét oldalt kiértékeli, tehát <code>p &amp; *p</code> önmagában nem biztonságos,  
-                ha <code>p</code> lehet <code>NULL</code>.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Olvashatóság és hordozhatóság</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                <code>status &amp; READY_MASK</code> bit-tesztnek jó, de <code>if (x &amp; y)</code> nem egyértelmű,  
-                hogy bit-kombinációt vizsgálunk vagy csak elfelejtettük a <code>&amp;&amp;</code>-et.  
-                A logikai operátor mindig feltételnek szánt, egyértelmű formát ad.
-              </td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Nem egész típusok támogatása</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">
-                A logikai operátor bármely skálázható típuson használható (például <code>double</code>, pointer, <code>enum</code>),  
-                és az eredmény mindig <code>int</code> (0 vagy 1).  
-                A bitműveletek ezzel szemben csak egész típusokon definiáltak.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>            
-    </small>       
-    </div>   
-</section>
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>48. Ismertesse a C nyelv „pointer” fogalmát és az indirekció fogalmát!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out">
-      <p>Mi az a pointer?</p>
-      <p>Definíció: A pointer (mutató) olyan változó, amely más objektum címét tárolja.<br>
-      Típus-szigorú: egy <code>int*</code> csak <code>int</code>-re mutathat, egy <code>char*</code> csak <code>char</code>-ra stb.</p>
-      <pre><code class="language-c" data-trim data-line-numbers>int  n = 42;   /* egy normál egész */
-int *p = &n;    /* p az n címe */</code></pre>
-    </small>
-    <small class="fragment fade-in-then-out">
-      <p>Alapvető műveletek</p>
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Operátor</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Név</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Példa</th>
-              <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jelentés</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>&amp;obj</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">address-of</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>&amp;n</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">Az objektum címe</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>*ptr</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">dereference</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>*p = 50;</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">A címzett tartalmára hivatkozik</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>ptr + k</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">pointer aritmetika</td>
-              <td style="border:1px solid #ccc; padding:2px 4px;"><code>p + 1</code></td>
-              <td style="border:1px solid #ccc; padding:2px 4px;">A k-adik elem címe azonos típusú objektumok sorozatában</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </small>
-    <small class="fragment fade-in-then-out">
-      <p>Egyszintű indirekció</p>
-      <pre style="
-      width:100%;
-      box-sizing:border-box;
-      margin:0;
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-x: hidden;
-  "><code class="language-c" data-trim data-line-numbers>// egyszintű indirekció
-int x  = 7;
-int *px = &x;       // indirekt hozzáférés: *px
-printf("%d", *px);  /* 7 */</code></pre>
-    </small>
-    <small class="fragment fade-in-then-out">
-      <p>Többszintű indirekció</p>
-      <pre style="
-      width:100%;
-      box-sizing:border-box;
-      margin:0;
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-x: hidden;
-  "><code class="language-c" data-trim data-line-numbers>// többszintű indirekció
-int  v   = 3;
-int *pv  = &v;      // &v → int*
-int **ppv = &pv;    // &pv → int**
-**ppv   = 99;       // két csillag: eljutunk v-ig
-/* Dinamikus tömbök (char** argv), mátrixok, összefűzött listák fejmutatója,
-   vagy olyan API-k, amelyek pointert várnak kimeneti paraméterként. */</code></pre>
-    </small>
-    <small class="fragment fade-in-then-out">
-      <p>Indirekció függvénymutatóval
+  </section>
+  <!--47. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>47.	Ismertesse példával a C nyelvben alkalmazható bitműveleteket! Miért volt szükség logikai műveletekre a bitműveletek mellett?</h6>
+    <div class="r-stack">
+        <small class="fragment fade-in-then-out">Bitműveleti operátorok C-ben
+          <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
+              <thead>
+                <tr>
+                  <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Operátor</th>
+                  <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jelentés</th>
+                  <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Példa (bináris)</th>
+                  <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Eredmény</th>
+                  <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Rövid magyarázat</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>&amp;</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">bit-AND</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>0b1100 &amp; 0b1010</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">0b1000</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">Csak a mindkét operandusban 1-es bitek maradnak.</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>|</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">bit-OR</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>0b0101 | 0b0011</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">0b0111</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">1-es, ha bármelyik operandus bitje 1.</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>^</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">bit-XOR</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>0b0110 ^ 0b0011</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">0b0101</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">1-es, ha a bitek különböznek.</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>~</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">bit-NOT (negáció)</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>~0b0001</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">függ a bites mérettől (pl. 0b1110)</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">Minden bitet megfordít.</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>&lt;&lt;</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">balra tolás</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>0b0001 &lt;&lt; 2</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">0b0100</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">Bitenkénti szorzás 2-vel az eltolás számával.</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>&gt;&gt;</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">jobbra tolás</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;"><code>0b1000 &gt;&gt; 2</code></td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">0b0010</td>
+                  <td style="border:1px solid #ccc; padding:2px 4px;">Osztás 2-vel minden lépésben.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </small>
+      <pre class="fragment fade-in-then-out"><code class="language-c" data-trim data-line-numbers>
+        uint8_t flags = 0b00000101;   // bit0 = ON, bit2 = ON
+        flags |= 0b00001000;          // 3. bit bekapcsolása (OR)
+        flags &= ~0b00000001;         // 0. bit kikapcsolása (AND + NOT)
+        if ((flags & 0b00001000) != 0) {
+            /* a 3. bit most aktív */
+        }
+      </code></pre>      
+      <small class="fragment fade-in-then-out">
+        Logikai operátorok és miért kellettek
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
+            <thead>
+              <tr>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Operátor</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Jelentés</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Példa</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Kiértékelés</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Eredmény értéke</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;"><code>&&</code></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">logikai ÉS</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;"><code>a && b</code></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">short-circuit: ha <code>a</code> hamis, <code>b</code> nem fut le</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">0 vagy 1</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;"><code>||</code></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">logikai VAGY</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;"><code>x > 0 || y < 0</code></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">short-circuit: ha <code>x > 0</code> igaz, <code>y < 0</code> nem fut</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">0 vagy 1</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;"><code>!</code></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">logikai NEM</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;"><code>!ptr</code></td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">—</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">0 vagy 1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </small>   
+      <small class="fragment fade-in-then-out">
+        Miért nem elég a bitművelet?
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.2; margin:0;">
+            <thead>
+              <tr>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Szempont</th>
+                <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Leírás</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Egész kifejezések igaz-hamis tesztelése</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  A feltételes utasítások (<code>if</code>, <code>while</code>, <code>for</code>) egész kifejezések igazságértékét kérik.  
+                  A <code>&&</code> és <code>||</code> pontosan erre szolgál: egyetlen igaz/hamis eredményt (0 / 1) ad, nem pedig bit-mintát.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Rövidre zárás (short-circuit)</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  <code>if (p && *p == 'x')</code> – ha <code>p</code> <code>NULL</code>, a jobb oldal meg sem próbál dereferálni, így elkerüljük a futási hibát.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Bit-AND vs. logikai AND</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  A <code>&amp;</code> mindkét oldalt kiértékeli, tehát <code>p &amp; *p</code> önmagában nem biztonságos,  
+                  ha <code>p</code> lehet <code>NULL</code>.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Olvashatóság és hordozhatóság</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  <code>status &amp; READY_MASK</code> bit-tesztnek jó, de <code>if (x &amp; y)</code> nem egyértelmű,  
+                  hogy bit-kombinációt vizsgálunk vagy csak elfelejtettük a <code>&amp;&amp;</code>-et.  
+                  A logikai operátor mindig feltételnek szánt, egyértelmű formát ad.
+                </td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc; padding:2px 4px;">Nem egész típusok támogatása</td>
+                <td style="border:1px solid #ccc; padding:2px 4px;">
+                  A logikai operátor bármely skálázható típuson használható (például <code>double</code>, pointer, <code>enum</code>),  
+                  és az eredmény mindig <code>int</code> (0 vagy 1).  
+                  A bitműveletek ezzel szemben csak egész típusokon definiáltak.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>            
+      </small>       
+      </div>   
+  </section>
+  <!--48. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>48. Ismertesse a C nyelv „pointer” fogalmát és az indirekció fogalmát!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out">
+        <p>Mi az a pointer?</p>
+        <p>
+          Definíció: A pointer (mutató) olyan változó, amely más objektum címét tárolja.<br>
+          Típus-szigorú: egy <code>int*</code> csak <code>int</code>-re mutathat, egy <code>char*</code> csak <code>char</code>-ra stb.
         </p>
+
+        <pre style="font-size: 1.1em; line-height: 1.4; background: #1e1e1e; color: #d4d4d4; overflow-x: auto;">
+      <code class="language-c" style="font-family: monospace; white-space: pre;">
+      int  n = 42;    /* egy normál egész */
+      int *p = &n;    /* p az n címe */
+      </code>
+        </pre>
+      </small>
+      <small class="fragment fade-in-then-out">
+        <p style="font-size: 1.3em;">Alapvető műveletek</p>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:1em; line-height:1.4; margin:0;">
+            <thead>
+              <tr>
+                <th style="border:1px solid #ccc; text-align:left;">Operátor</th>
+                <th style="border:1px solid #ccc; text-align:left;">Név</th>
+                <th style="border:1px solid #ccc; text-align:left;">Példa</th>
+                <th style="border:1px solid #ccc; text-align:left;">Jelentés</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border:1px solid #ccc;"><code>&amp;obj</code></td>
+                <td style="border:1px solid #ccc;">address-of</td>
+                <td style="border:1px solid #ccc;"><code>&amp;n</code></td>
+                <td style="border:1px solid #ccc;">Az objektum címe</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc;"><code>*ptr</code></td>
+                <td style="border:1px solid #ccc;">dereference</td>
+                <td style="border:1px solid #ccc;"><code>*p = 50;</code></td>
+                <td style="border:1px solid #ccc;">A címzett tartalmára hivatkozik</td>
+              </tr>
+              <tr>
+                <td style="border:1px solid #ccc;"><code>ptr + k</code></td>
+                <td style="border:1px solid #ccc;">pointer aritmetika</td>
+                <td style="border:1px solid #ccc;"><code>p + 1</code></td>
+                <td style="border:1px solid #ccc;">A k-adik elem címe azonos típusú objektumok sorozatában</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </small>
+      <small class="fragment fade-in-then-out">
+        <p>Egyszintű indirekció</p>
         <pre style="
         width:100%;
         box-sizing:border-box;
@@ -847,618 +824,656 @@ int **ppv = &pv;    // &pv → int**
         white-space: pre-wrap;
         word-break: break-word;
         overflow-x: hidden;
-    "><code class="language-c" data-trim data-line-numbers>int add(int a, int b) { return a + b; }
-int (*op)(int,int) = add;// op egy függvény címe
-int sum = op(2,3);       // indirekt hívás
-        </code></pre>
-    </small>
-  </div>
-</section>
+        font-size: 1.3em;
+    "><code class="language-c" data-trim data-line-numbers>// egyszintű indirekció
+  int x  = 7;
+  int *px = &x;       // indirekt hozzáférés: *px
+  printf("%d", *px);  /* 7 */</code></pre>
+      </small>
+      <small class="fragment fade-in-then-out">
+        <p>Többszintű indirekció</p>
+        <pre style="
+        width:100%;
+        box-sizing:border-box;
+        margin:0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-x: hidden;
+        font-size: 0.8em;
+    "><code class="language-c" data-trim data-line-numbers>// többszintű indirekció
+  int  v   = 3;
+  int *pv  = &v;      // &v → int*
+  int **ppv = &pv;    // &pv → int**
+  **ppv   = 99;       // két csillag: eljutunk v-ig
+  /* Dinamikus tömbök (char** argv), mátrixok, összefűzött listák fejmutatója,
+    vagy olyan API-k, amelyek pointert várnak kimeneti paraméterként. */</code></pre>
+      </small>
+      <small class="fragment fade-in-then-out">
+        <p>Indirekció függvénymutatóval
+          </p>
+          <pre style="
+          width:100%;
+          box-sizing:border-box;
+          margin:0;
+          white-space: pre-wrap;
+          word-break: break-word;
+          overflow-x: hidden;
+          font-size: 1.2em;
+      "><code class="language-c" data-trim data-line-numbers>int add(int a, int b) { return a + b; }
+  int (*op)(int,int) = add;// op egy függvény címe
+  int sum = op(2,3);       // indirekt hívás
+          </code></pre>
+      </small>
+    </div>
+  </section>
+  <!--49. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>49.	Ismertesse a pointer aritmetikát!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out"> 
+        <table style="font-size:90%; border:1px solid #000; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th style="border:1px solid #000; padding:4px;">Művelet</th>
+              <th style="border:1px solid #000; padding:4px;">Mit jelent a fordító számára?</th>
+              <th style="border:1px solid #000; padding:4px;">Érvényességi feltétel</th>
+              <th style="border:1px solid #000; padding:4px;">Eredmény típusa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">p + n, n + p</td>
+              <td style="border:1px solid #000; padding:4px;">p cím + n × sizeof(*p) bájt</td>
+              <td style="border:1px solid #000; padding:4px;">p és a végpont ugyanabban a tömbben vagy “one-past”</td>
+              <td style="border:1px solid #000; padding:4px;">ugyanaz a pointer-típus</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">p - n</td>
+              <td style="border:1px solid #000; padding:4px;">p cím − n × sizeof(*p) bájt</td>
+              <td style="border:1px solid #000; padding:4px;">mint fent</td>
+              <td style="border:1px solid #000; padding:4px;">pointer-típus</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">++p, p++, --p, …</td>
+              <td style="border:1px solid #000; padding:4px;">p = p ± 1 elem (nem bájt!)</td>
+              <td style="border:1px solid #000; padding:4px;">mint fent</td>
+              <td style="border:1px solid #000; padding:4px;">pointer-típus</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">p1 - p2</td>
+              <td style="border:1px solid #000; padding:4px;">elemek száma (ptrdiff_t) a két cím között</td>
+              <td style="border:1px solid #000; padding:4px;">p1, p2 ugyanazon tömb elemére vagy one-past-jára mutat</td>
+              <td style="border:1px solid #000; padding:4px;">ptrdiff_t</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">p[i] vagy *(p+i)</td>
+              <td style="border:1px solid #000; padding:4px;">*(p + i) – ekvivalens az indexeléssel</td>
+              <td style="border:1px solid #000; padding:4px;">mint fent</td>
+              <td style="border:1px solid #000; padding:4px;">lvalue *p típus</td>
+            </tr>
+          </tbody>
+        </table>
+      </small>
+        <pre class="fragment fade-in-then-out">
+          <code class="language-c" data-trim data-line-numbers>
+          //1. Példa – lineáris bejárás
 
+          int a[5] = {2,4,6,8,10};
+          int *p = a;            // &a[0]
+          while (p < a + 5) {    // one-past pointerig érvényes
+              printf("%d ", *p); // dereferencia
+              ++p;               // ugrás a következő int-re
+          }                      // (4 bájttal 32-bitesen)
+          </code>
+        </pre>
+        <pre class="fragment fade-in-then-out">
+          <code class="language-c" data-trim data-line-numbers>
+          //2. Példa – Különbség két pointer között
 
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>49.	Ismertesse a pointer aritmetikát!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out"> 
-      <table style="font-size:90%; border:1px solid #000; border-collapse: collapse;">
-        <thead>
-          <tr>
-            <th style="border:1px solid #000; padding:4px;">Művelet</th>
-            <th style="border:1px solid #000; padding:4px;">Mit jelent a fordító számára?</th>
-            <th style="border:1px solid #000; padding:4px;">Érvényességi feltétel</th>
-            <th style="border:1px solid #000; padding:4px;">Eredmény típusa</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">p + n, n + p</td>
-            <td style="border:1px solid #000; padding:4px;">p cím + n × sizeof(*p) bájt</td>
-            <td style="border:1px solid #000; padding:4px;">p és a végpont ugyanabban a tömbben vagy “one-past”</td>
-            <td style="border:1px solid #000; padding:4px;">ugyanaz a pointer-típus</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">p - n</td>
-            <td style="border:1px solid #000; padding:4px;">p cím − n × sizeof(*p) bájt</td>
-            <td style="border:1px solid #000; padding:4px;">mint fent</td>
-            <td style="border:1px solid #000; padding:4px;">pointer-típus</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">++p, p++, --p, …</td>
-            <td style="border:1px solid #000; padding:4px;">p = p ± 1 elem (nem bájt!)</td>
-            <td style="border:1px solid #000; padding:4px;">mint fent</td>
-            <td style="border:1px solid #000; padding:4px;">pointer-típus</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">p1 - p2</td>
-            <td style="border:1px solid #000; padding:4px;">elemek száma (ptrdiff_t) a két cím között</td>
-            <td style="border:1px solid #000; padding:4px;">p1, p2 ugyanazon tömb elemére vagy one-past-jára mutat</td>
-            <td style="border:1px solid #000; padding:4px;">ptrdiff_t</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">p[i] vagy *(p+i)</td>
-            <td style="border:1px solid #000; padding:4px;">*(p + i) – ekvivalens az indexeléssel</td>
-            <td style="border:1px solid #000; padding:4px;">mint fent</td>
-            <td style="border:1px solid #000; padding:4px;">lvalue *p típus</td>
-          </tr>
-        </tbody>
-      </table>
-    </small>
-      <pre class="fragment fade-in-then-out">
-        <code class="language-c" data-trim data-line-numbers>
-        //1. Példa – lineáris bejárás
-
-        int a[5] = {2,4,6,8,10};
-        int *p = a;            // &a[0]
-        while (p < a + 5) {    // one-past pointerig érvényes
-            printf("%d ", *p); // dereferencia
-            ++p;               // ugrás a következő int-re
-        }                      // (4 bájttal 32-bitesen)
-        </code>
-      </pre>
-      <pre class="fragment fade-in-then-out">
-        <code class="language-c" data-trim data-line-numbers>
-        //2. Példa – Különbség két pointer között
-
-        double v[100];
-        double *first = v + 20;
-        double *last  = v + 80;
-        ptrdiff_t elems = last - first;   // 60, nem 480 bájt
-        </code>
-      </pre>
-      <pre class="fragment fade-in-then-out">
-        <code class="language-c" data-trim data-line-numbers>
-          //3. Példa – Különbség két pointer között
-          
           double v[100];
           double *first = v + 20;
           double *last  = v + 80;
           ptrdiff_t elems = last - first;   // 60, nem 480 bájt
-        </code>
-      </pre>
-      <pre class="fragment fade-in-then-out">
-        <code class="language-c" data-trim data-line-numbers>
-          //4. Példa – Szeletek
-          
-          int *begin = arr + start;
-          int *end   = arr + end_excl;   // mutathat one-past-ra
-          for (int *p = begin; p < end; ++p) process(*p);
-        </code>
-      </pre>
-      <pre class="fragment fade-in-then-out">
-        <code class="language-c" data-trim data-line-numbers>
-          //5. Példa – Mutató + index
-          
-          size_t idx = 17;
-          arr[idx] == *(arr + idx);   // teljesen azonos kód keletkezik
-        </code>
-      </pre>
-      <small class="fragment fade-in-then-out">
-       <h3>char * kivételnek tűnik, de nem az.</h3>
-        sizeof(char) definíció szerint 1, ezért c + n tényleg n bájttal lép tovább.
-        <br>Ezért használható bájt-szintű buffer-manipulációhoz.
-      </small>
-    </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>50.	Ismertesse a tömbök használatánál előforduló komplexitás-típusokat! Mondjon példát arra a műveletre, amelyik adott komplexitású!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out">
-      <table style="font-size:70%; border:1px solid #000; border-collapse: collapse;">
-        <thead>
-          <tr>
-            <th style="border:1px solid #000; padding:4px;">Jelölés</th>
-            <th style="border:1px solid #000; padding:4px;">Név</th>
-            <th style="border:1px solid #000; padding:4px;">Rövid magyarázat</th>
-            <th style="border:1px solid #000; padding:4px;">Tipikus művelet tömbön</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">O(1)</td>
-            <td style="border:1px solid #000; padding:4px;">konstans idő</td>
-            <td style="border:1px solid #000; padding:4px;">A végrehajtási idő nem függ a mérettől (n).</td>
-            <td style="border:1px solid #000; padding:4px;">Indexelés – x = a[i]; az elem címe aritmetikával azonnal kiszámítható.</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">O(log n)</td>
-            <td style="border:1px solid #000; padding:4px;">logaritmikus</td>
-            <td style="border:1px solid #000; padding:4px;">Minden lépésben megfelezi (vagy harmadolja, …) a keresési teret.</td>
-            <td style="border:1px solid #000; padding:4px;">Bináris keresés előre rendezett tömbben.</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">O(n)</td>
-            <td style="border:1px solid #000; padding:4px;">lineáris</td>
-            <td style="border:1px solid #000; padding:4px;">A teljes tömb minden elemét legalább egyszer érinti.</td>
-            <td style="border:1px solid #000; padding:4px;">Lineáris keresés ismeretlen elrendezésnél; beszúrás vagy törlés középen (shift).</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">O(n log n)</td>
-            <td style="border:1px solid #000; padding:4px;">lineáris-logaritmikus</td>
-            <td style="border:1px solid #000; padding:4px;">Hatékony rendezések elméleti alsó korlátja összehasonlítás-alapú modellben.</td>
-            <td style="border:1px solid #000; padding:4px;">Merge sort, Quicksort (átlagos eset), Heapsort.</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">O(n²)</td>
-            <td style="border:1px solid #000; padding:4px;">kvadratikus</td>
-            <td style="border:1px solid #000; padding:4px;">Minden elem minden másikkal összevetődik.</td>
-            <td style="border:1px solid #000; padding:4px;">Buborékrendezés, kiválasztásos rendezés (selection sort).</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">O(n³) …</td>
-            <td style="border:1px solid #000; padding:4px;">polinomiális (magasabb fokú)</td>
-            <td style="border:1px solid #000; padding:4px;">Tömb × tömb kombinációk többdimenziós műveleteknél.</td>
-            <td style="border:1px solid #000; padding:4px;">Naiv mátrixszorzás három beágyazott ciklussal.</td>
-          </tr>
-        </tbody>
-      </table>
-    </small>
-    <div class="fragment fade-in-then-out">Na és több szálon futtatva?!</div>            
-    </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>51.	Ismertesse a tömbből való kicímzés veszélyeit!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out"> 
-      <table style="font-size:80%; border:1px solid #000; border-collapse:collapse;">
-        <thead>
-          <tr>
-            <th style="border:1px solid #000; padding:4px;">Jelenség</th>
-            <th style="border:1px solid #000; padding:4px;">Mi történik a gépen?</th>
-            <th style="border:1px solid #000; padding:4px;">Látható tünet</th>
-            <th style="border:1px solid #000; padding:4px;">Miért baj?</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">Undefined Behaviour (UB)</td>
-            <td style="border:1px solid #000; padding:4px;">A C-szabvány nem írja le, mit KELL tennie a fordítónak; bármi előfordulhat.</td>
-            <td style="border:1px solid #000; padding:4px;">működni látszik, segfault, fura értékek… – attól függ, épp mit lépsz le.</td>
-            <td style="border:1px solid #000; padding:4px;">Lehet, hogy most „bezzeg megy”, de optimalizált fordításnál vagy más gépen elszáll.</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">Stack-smashing (stack-based buffer overflow)</td>
-            <td style="border:1px solid #000; padding:4px;">Lokális tömb túlírása → felülírod a visszatérési címet / canary-t.</td>
-            <td style="border:1px solid #000; padding:4px;">*** stack smashing detected *** Aborted vagy csendes exploit.</td>
-            <td style="border:1px solid #000; padding:4px;">Klasszikus ROP, shellcode: tetszőleges kódfuttatás.</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">Heap-corruption</td>
-            <td style="border:1px solid #000; padding:4px;">malloc()-pal kapott blokk határán túl írsz.</td>
-            <td style="border:1px solid #000; padding:4px;">Random crash később (free()-nél, teljesen másik kódrészben).</td>
-            <td style="border:1px solid #000; padding:4px;">Sérül a malloc-header, dupla-free, use-after-free – security bug, adatvesztés.</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">Information leak</td>
-            <td style="border:1px solid #000; padding:4px;">„Csak” olvasod a szomszéd memóriát.</td>
-            <td style="border:1px solid #000; padding:4px;">Látszólag helyes, de kiírhatod más változók / kulcsok tartalmát.</td>
-            <td style="border:1px solid #000; padding:4px;">Jelszó, titkos kulcs, ASLR-címek kikerülhetnek (Heartbleed).</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">Data races &amp; teardown</td>
-            <td style="border:1px solid #000; padding:4px;">Több szál ugyanazon túlcsúszott területre ír.</td>
-            <td style="border:1px solid #000; padding:4px;">Megmagyarázhatatlan hibák, ritka crash.</td>
-            <td style="border:1px solid #000; padding:4px;">Nehéz visszakövetni, nondeterminisztikus hibák.</td>
-          </tr>
-        </tbody>
-      </table>
-    </small>
-    </div>
-</section>
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>52.	Ismertesse a tömbök [] operátorának jelentését! Hogyan írható fel a [] operátor pointer aritmetikát felhasználva?</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out"> A C-szabvány (C23 §6.5.2.1) kimondja, hogy bármely két kifejezésre
-      <pre>
-        <code class="language-c" data-trim data-line-numbers>
-          E1[E2]
-        </code>
-      </pre>
-      Az alábbi egzakt módon értelmezendő:
-      <pre>
-      <code class="language-c" data-trim data-line-numbers>
-        * ( (E1) + (E2) )
-      </code></pre>
-      - legalább az egyik operandusnak mutató típusúnak kell lennie,
-
-      <br><br>- a másiknak egész típusúnak,
-
-      <br><br>- a + itt pointer-aritmetika: az egész operandust megszorozza sizeof(*pointer)-rel, és ahhoz adja a címhez,
-
-      <br><br>- a végén * (dereferencia) adja vissza az adott elem lvalue-ját.
-    </small>
-    <div class="fragment fade-in-then-out">
-      Következmény:
-      <pre style="
-          width: 100%;                  /* teljes szélesség */
-          box-sizing: border-box;       /* padding is beleszámítson */
-          white-space: pre-wrap;        /* tördelés engedélyezése */
-          word-break: break-word;       /* hosszú szavak tördelése */
-          overflow-x: hidden;           /* vízszintes görgetés elrejtése */
-          margin: 0;                    /* ha van default margó, eltűnik */
-      ">
-    <code class="language-c" data-trim data-line-numbers>
-    #include &lt;stdio.h&gt;
-    int main(void)
-    {
-      int tomb[5] = { 1,2,3,4,5 };
-      for (int i = 0; i < 5; i++) {
-        printf("%d\t", tomb[i]);
-        printf("%d\n", i[tomb]);
-      }
-      return 0;
-    }
-    </code>
-      </pre>
-    </div>
-    
-    
-    <div class="fragment fade-in-then-out">Kimenet:
-      <pre>
-      <code class="language-c" data-trim>
-       1  1
-       2  2
-       3  3
-       4  4
-       5  5
-       </code>
+          </code>
         </pre>
-      </div>            
-    </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>54.	Ismertesse a függvények írásának és paraméterezésének nyelvi szabályait a C nyelvben!</h6>
-  <div class="r-stack">
-    <pre  class="fragment fade-in-then-out">
-      <code class="language-c" data-trim data-line-numbers>
-        visszateresi_ertek_tipusa függvény_név(típus első_paraméter, típus második_paraméter, ...)
-        {
-            /* függvénytörzs */
-            /* ... */
-            return érték;   /* ha a visszatérési_típus nem void */
-        }        
-      </code>
-    </pre> 
-    <pre  class="fragment fade-in-then-out">
-      <code class="language-c" data-trim data-line-numbers>
-        //Paraméternevek a prototípusban! (deklaráció) elhagyhatók:
-
-        double hypot(double, double);   /* OK prototípus */
-
-        //a definícióban kötelezőek.
-      </code>
-    </pre>
-    <small class="fragment fade-in-then-out" style="display: flex; justify-content: center; width: 100%;">
-      <table style="font-size:90%; border:1px solid #000; border-collapse:collapse; width: auto;">
-        <thead>
-          <tr>
-            <th style="border:1px solid #000; padding:4px;">Kulcsszó</th>
-            <th style="border:1px solid #000; padding:4px;">Hová írod?</th>
-            <th style="border:1px solid #000; padding:4px;">Mit ér el?</th>
-            <th style="border:1px solid #000; padding:4px;">Rövid tipp</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">static</td>
-            <td style="border:1px solid #000; padding:4px;">static int f(void)</td>
-            <td style="border:1px solid #000; padding:4px;">
-              A függvény csak a forrásfájlban<br>
-              látható (belső kötés).
-            </td>
-            <td style="border:1px solid #000; padding:4px;">Segédfüggvények<br>elrejtésére.</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">inline</td>
-            <td style="border:1px solid #000; padding:4px;">
-              inline int f(int x)<br>
-              static inline …
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              A fordító a hívás helyére másolhatja a kódot,<br>
-              így nincs hívási költség (ha akarja).
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              Kis, gyakori<br>függvényekhez;<br>
-              static inline‐t válassz,<br>
-              ha nem kell külső<br>szimbólum.
-            </td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">const</td>
-            <td style="border:1px solid #000; padding:4px;">int f(const char *p)</td>
-            <td style="border:1px solid #000; padding:4px;">
-              A paraméter/visszatérő<br>
-              adat nem módosítható.<br>
-              Magát a függvényt nem „rögzíti”.
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              Tedd oda, ahol<br>
-              meg akarod tiltani<br>
-              az írást a hívónak vagy<br>
-              a függvénynek.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </small>
-    </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>55.	Ismertesse a formális és aktuális paraméter fogalmát a C nyelv függvényeinél!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out">
-      <table style="font-size:90%; border:1px solid #000; border-collapse:collapse;">
-        <thead>
-          <tr>
-            <th style="border:1px solid #000; padding:4px;">Fogalom</th>
-            <th style="border:1px solid #000; padding:4px;">Hol jelenik meg?</th>
-            <th style="border:1px solid #000; padding:4px;">Mi tárolódik?</th>
-            <th style="border:1px solid #000; padding:4px;">Élettartam</th>
-            <th style="border:1px solid #000; padding:4px;">Példa</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">
-              Formális paraméter<br>
-              <small>(formal parameter, paraméter-név)</small>
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              A függvény deklarációjában / definíciójában<br>
-              <code>void swap(int *a, int *b)</code>
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              Azonosító + típus – a függvény belső változója
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              A függvény hívásának idejére automatikus tárhelyen<br>
-              (stack frame)
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              <code>int *a, int *b</code> a swap törzsén belül
-            </td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #000; padding:4px;">
-              Aktuális (valós) paraméter<br>
-              <small>(actual parameter, argumentum)</small>
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              A hívó oldalon<br>
-              <code>swap(&x, &y);</code>
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              Bármilyen kifejezés értéke vagy címe, amelyet a fordító átad
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              A hívó kódrészlet saját élettartama szerint
-            </td>
-            <td style="border:1px solid #000; padding:4px;">
-              <code>&x, &y</code> a swap hívásában
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      
-    </small>
-    </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>56.	Milyen paraméter-átadást használ a C nyelv? Hogyan tudja megváltoztatni a függvény a paraméterei értékét úgy, hogy a hívó folyamatban is a változtatott érték szerepeljen?</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out"> ...</small>
-    </div>
-</section>
-
-<section>
-  <h2>Vizsga kérdések</h2>
-  <h6>57.	Ismertesse a lokális és globális változó fogalmakat!</h6>
-  <div class="r-stack">
-    <small class="fragment fade-in-then-out"> ...</small>
-    </div>
-</section>
-
-
-      <section><h2>Bináris fileok</h2>
-        <div style="overflow-x:auto;">
-            <table style="width:100%; border-collapse:collapse; font-size:0.75em; line-height:1.2;">
-              <thead>
-                <tr>
-                  <th style="border:1px solid #ccc; padding:4px;">Előny</th>
-                  <th style="border:1px solid #ccc; padding:4px;">Rövid indok</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style="border:1px solid #ccc; padding:4px;">Kompakt</td>
-                  <td style="border:1px solid #ccc; padding:4px;">
-                    A puszta bájtokat írjuk ki, nincs karakter-kódolási többlet<br>
-                    (pl. 0x00–0xFF mind engedélyezett).
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border:1px solid #ccc; padding:4px;">Gyors I/O</td>
-                  <td style="border:1px solid #ccc; padding:4px;">
-                    A lemezen is, a memóriában is byte-pontos másolat;<br>
-                    nincs parse-olás, konverzió.
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border:1px solid #ccc; padding:4px;">Strukturált</td>
-                  <td style="border:1px solid #ccc; padding:4px;">
-                    Tetszőleges rekord-/tömörtáblázat-elrendezés; csak a te programod tudja a „térképet”,<br>
-                    ezért nehezebb véletlenül vagy rosszindulatúan módosítani.
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border:1px solid #ccc; padding:4px;">Hardver-közeli</td>
-                  <td style="border:1px solid #ccc; padding:4px;">
-                    Firmware-, képcímtár-, hálózati csomag- vagy mentett játékállás-fájl ugyanazzal a<br>
-                    memóriaképpel dolgozik.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          </table>
-    </section>
-    <section>
-        <h2>Bináris fileok</h2>
-        <p>Egyszerű írási példa</p>
-        <pre><code class="language-c" data-trim data-line-numbers>
-      #include &lt;stdio.h&gt;
-      #include &lt;stdint.h&gt;
-      
-      struct Record {            /* 12 bájt fix */
-          uint32_t id;  float    value; /*4+4*/
-          uint8_t  flag, pad[3];/*1+3, 4 bytera igazítás miatt pad*/
-      };
-      
-      int main(void) {
-          struct Record rec = { 42, 3.14f, 1 };
-          FILE *f = fopen("data.bin", "wb");   /* b = binary */
-          fwrite(&rec, sizeof rec, 1, f);             fclose(f);
-          return 0;
-      }
+        <pre class="fragment fade-in-then-out">
+          <code class="language-c" data-trim data-line-numbers>
+            //3. Példa – Különbség két pointer között
+            
+            double v[100];
+            double *first = v + 20;
+            double *last  = v + 80;
+            ptrdiff_t elems = last - first;   // 60, nem 480 bájt
+          </code>
+        </pre>
+        <pre class="fragment fade-in-then-out">
+          <code class="language-c" data-trim data-line-numbers>
+            //4. Példa – Szeletek
+            
+            int *begin = arr + start;
+            int *end   = arr + end_excl;   // mutathat one-past-ra
+            for (int *p = begin; p < end; ++p) process(*p);
+          </code>
+        </pre>
+        <pre class="fragment fade-in-then-out">
+          <code class="language-c" data-trim data-line-numbers>
+            //5. Példa – Mutató + index
+            
+            size_t idx = 17;
+            arr[idx] == *(arr + idx);   // teljesen azonos kód keletkezik
+          </code>
+        </pre>
+        <small class="fragment fade-in-then-out">
+        <h3>char * kivételnek tűnik, de nem az.</h3>
+          sizeof(char) definíció szerint 1, ezért c + n tényleg n bájttal lép tovább.
+          <br>Ezért használható bájt-szintű buffer-manipulációhoz.
+        </small>
+      </div>
+  </section>
+  <!--50. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>50.	Ismertesse a tömbök használatánál előforduló komplexitás-típusokat! Mondjon példát arra a műveletre, amelyik adott komplexitású!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out">
+        <table style="font-size:70%; border:1px solid #000; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th style="border:1px solid #000; padding:4px;">Jelölés</th>
+              <th style="border:1px solid #000; padding:4px;">Név</th>
+              <th style="border:1px solid #000; padding:4px;">Rövid magyarázat</th>
+              <th style="border:1px solid #000; padding:4px;">Tipikus művelet tömbön</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">O(1)</td>
+              <td style="border:1px solid #000; padding:4px;">konstans idő</td>
+              <td style="border:1px solid #000; padding:4px;">A végrehajtási idő nem függ a mérettől (n).</td>
+              <td style="border:1px solid #000; padding:4px;">Indexelés – x = a[i]; az elem címe aritmetikával azonnal kiszámítható.</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">O(log n)</td>
+              <td style="border:1px solid #000; padding:4px;">logaritmikus</td>
+              <td style="border:1px solid #000; padding:4px;">Minden lépésben megfelezi (vagy harmadolja, …) a keresési teret.</td>
+              <td style="border:1px solid #000; padding:4px;">Bináris keresés előre rendezett tömbben.</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">O(n)</td>
+              <td style="border:1px solid #000; padding:4px;">lineáris</td>
+              <td style="border:1px solid #000; padding:4px;">A teljes tömb minden elemét legalább egyszer érinti.</td>
+              <td style="border:1px solid #000; padding:4px;">Lineáris keresés ismeretlen elrendezésnél; beszúrás vagy törlés középen (shift).</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">O(n log n)</td>
+              <td style="border:1px solid #000; padding:4px;">lineáris-logaritmikus</td>
+              <td style="border:1px solid #000; padding:4px;">Hatékony rendezések elméleti alsó korlátja összehasonlítás-alapú modellben.</td>
+              <td style="border:1px solid #000; padding:4px;">Merge sort, Quicksort (átlagos eset), Heapsort.</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">O(n²)</td>
+              <td style="border:1px solid #000; padding:4px;">kvadratikus</td>
+              <td style="border:1px solid #000; padding:4px;">Minden elem minden másikkal összevetődik.</td>
+              <td style="border:1px solid #000; padding:4px;">Buborékrendezés, kiválasztásos rendezés (selection sort).</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">O(n³) …</td>
+              <td style="border:1px solid #000; padding:4px;">polinomiális (magasabb fokú)</td>
+              <td style="border:1px solid #000; padding:4px;">Tömb × tömb kombinációk többdimenziós műveleteknél.</td>
+              <td style="border:1px solid #000; padding:4px;">Naiv mátrixszorzás három beágyazott ciklussal.</td>
+            </tr>
+          </tbody>
+        </table>
+      </small>
+      <div class="fragment fade-in-then-out">Na és több szálon futtatva?!</div>            
+      </div>
+  </section>
+  <!--51. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>51.	Ismertesse a tömbből való kicímzés veszélyeit!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out"> 
+        <table style="font-size:80%; border:1px solid #000; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="border:1px solid #000; padding:4px;">Jelenség</th>
+              <th style="border:1px solid #000; padding:4px;">Mi történik a gépen?</th>
+              <th style="border:1px solid #000; padding:4px;">Látható tünet</th>
+              <th style="border:1px solid #000; padding:4px;">Miért baj?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">Undefined Behaviour (UB)</td>
+              <td style="border:1px solid #000; padding:4px;">A C-szabvány nem írja le, mit KELL tennie a fordítónak; bármi előfordulhat.</td>
+              <td style="border:1px solid #000; padding:4px;">működni látszik, segfault, fura értékek… – attól függ, épp mit lépsz le.</td>
+              <td style="border:1px solid #000; padding:4px;">Lehet, hogy most „bezzeg megy”, de optimalizált fordításnál vagy más gépen elszáll.</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">Stack-smashing (stack-based buffer overflow)</td>
+              <td style="border:1px solid #000; padding:4px;">Lokális tömb túlírása → felülírod a visszatérési címet / canary-t.</td>
+              <td style="border:1px solid #000; padding:4px;">*** stack smashing detected *** Aborted vagy csendes exploit.</td>
+              <td style="border:1px solid #000; padding:4px;">Klasszikus ROP, shellcode: tetszőleges kódfuttatás.</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">Heap-corruption</td>
+              <td style="border:1px solid #000; padding:4px;">malloc()-pal kapott blokk határán túl írsz.</td>
+              <td style="border:1px solid #000; padding:4px;">Random crash később (free()-nél, teljesen másik kódrészben).</td>
+              <td style="border:1px solid #000; padding:4px;">Sérül a malloc-header, dupla-free, use-after-free – security bug, adatvesztés.</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">Information leak</td>
+              <td style="border:1px solid #000; padding:4px;">„Csak” olvasod a szomszéd memóriát.</td>
+              <td style="border:1px solid #000; padding:4px;">Látszólag helyes, de kiírhatod más változók / kulcsok tartalmát.</td>
+              <td style="border:1px solid #000; padding:4px;">Jelszó, titkos kulcs, ASLR-címek kikerülhetnek (Heartbleed).</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">Data races &amp; teardown</td>
+              <td style="border:1px solid #000; padding:4px;">Több szál ugyanazon túlcsúszott területre ír.</td>
+              <td style="border:1px solid #000; padding:4px;">Megmagyarázhatatlan hibák, ritka crash.</td>
+              <td style="border:1px solid #000; padding:4px;">Nehéz visszakövetni, nondeterminisztikus hibák.</td>
+            </tr>
+          </tbody>
+        </table>
+      </small>
+      </div>
+  </section>
+  <!--52. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>52.	Ismertesse a tömbök [] operátorának jelentését! Hogyan írható fel a [] operátor pointer aritmetikát felhasználva?</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out"> A C-szabvány (C23 §6.5.2.1) kimondja, hogy bármely két kifejezésre
+        <pre>
+          <code class="language-c" data-trim data-line-numbers>
+            E1[E2]
+          </code>
+        </pre>
+        Az alábbi egzakt módon értelmezendő:
+        <pre>
+        <code class="language-c" data-trim data-line-numbers>
+          * ( (E1) + (E2) )
         </code></pre>
-      </section> 
-      <section>
-        <h2>Bináris fileok</h2>
-        <p>Egyszerű olvasási példa</p>
-        <pre><code class="language-c" data-trim data-line-numbers>
+        - legalább az egyik operandusnak mutató típusúnak kell lennie,
+
+        <br><br>- a másiknak egész típusúnak,
+
+        <br><br>- a + itt pointer-aritmetika: az egész operandust megszorozza sizeof(*pointer)-rel, és ahhoz adja a címhez,
+
+        <br><br>- a végén * (dereferencia) adja vissza az adott elem lvalue-ját.
+      </small>
+      <div class="fragment fade-in-then-out">
+        Következmény:
+        <pre style="
+            width: 100%;                  /* teljes szélesség */
+            box-sizing: border-box;       /* padding is beleszámítson */
+            white-space: pre-wrap;        /* tördelés engedélyezése */
+            word-break: break-word;       /* hosszú szavak tördelése */
+            overflow-x: hidden;           /* vízszintes görgetés elrejtése */
+            margin: 0;                    /* ha van default margó, eltűnik */
+        ">
+      <code class="language-c" data-trim data-line-numbers>
       #include &lt;stdio.h&gt;
-      #include &lt;stdint.h&gt;
-      struct Record {...};
-      
-      int main(void) {
-        FILE *f = fopen("data.bin", "rb");
-        struct Record rec;
-        if (fread(&rec, sizeof rec, 1, f) == 1) {
-            printf("id=%u  value=%f  flag=%u\n",
-                    rec.id, rec.value, rec.flag);
+      int main(void)
+      {
+        int tomb[5] = { 1,2,3,4,5 };
+        for (int i = 0; i < 5; i++) {
+          printf("%d\t", tomb[i]);
+          printf("%d\n", i[tomb]);
         }
-        fclose(f);
         return 0;
-        } 
-        </code></pre>
-      </section>           
-      <section><h2>Bináris fileok</h2>
-        <p>data.bin hexadecimálisan</p>
-        <pre><code class="" data-trim data-line-numbers>
-            00000000  2A 00 00 00  C3 F5 48 40  01 00 00 00
+      }
+      </code>
+        </pre>
+      </div>
+      
+      
+      <div class="fragment fade-in-then-out">Kimenet:
+        <pre>
+        <code class="language-c" data-trim>
+        1  1
+        2  2
+        3  3
+        4  4
+        5  5
+        </code>
+          </pre>
+        </div>            
+      </div>
+  </section>
+  <!--54. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>54.	Ismertesse a függvények írásának és paraméterezésének nyelvi szabályait a C nyelvben!</h6>
+    <div class="r-stack">
+      <pre  class="fragment fade-in-then-out">
+        <code class="language-c" data-trim data-line-numbers>
+          visszateresi_ertek_tipusa függvény_név(típus első_paraméter,
+                                                 típus második_paraméter,
+                                                 ...)
+          {
+              /* függvénytörzs */
+              /* ... */
+              return érték;   /* ha a visszatérési_típus nem void */
+          }        
+        </code>
+      </pre> 
+      <pre  class="fragment fade-in-then-out">
+        <code class="language-c" data-trim data-line-numbers>
+          //Paraméternevek a prototípusban! (deklaráció) elhagyhatók:
 
-        </code></pre>
-        <small>A legtöbb processzor azt feltételezi, hogy egy 4-bájtos (uint32_t, float) mező címe 4-es többszörös (például 0x1000, 0x1004, 0x1008 stb.).</small>
+          double hypot(double, double);   /* OK prototípus */
 
-        <small>Ha a flag után nem tennénk be a 3 bájt padding-et, akkor a következő uint32_t vagy float mező nem lenne 4-re igazítva, és az ilyen „unaligned” memóriacímeken történő olvasás-írás több dolgot jelenthet:</small>
-        <small></small>
-        <small>
-          Lassabb lesz, mert a CPU kénytelen két memóriacímről összeollózni a teljes 4 bájtodat, vagy extra mikro­utasításokat futtatni.</small>
-        <small>Egyes architektúrákon hiba, sőt kivétel keletkezik unaligned hozzáférésnél (pl. néhány beágyazott CPU-n, vagy ARM-on, ha nem konfigurálod).</small>
+          //a definícióban kötelezőek.
+        </code>
+      </pre>
+      <small class="fragment fade-in-then-out" style="display: flex; justify-content: center; width: 100%;">
+        <table style="font-size:90%; border:1px solid #000; border-collapse:collapse; width: auto;">
+          <thead>
+            <tr>
+              <th style="border:1px solid #000; padding:4px;">Kulcsszó</th>
+              <th style="border:1px solid #000; padding:4px;">Hová írod?</th>
+              <th style="border:1px solid #000; padding:4px;">Mit ér el?</th>
+              <th style="border:1px solid #000; padding:4px;">Rövid tipp</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">static</td>
+              <td style="border:1px solid #000; padding:4px;">static int f(void)</td>
+              <td style="border:1px solid #000; padding:4px;">
+                A függvény csak a forrásfájlban<br>
+                látható (belső kötés).
+              </td>
+              <td style="border:1px solid #000; padding:4px;">Segédfüggvények<br>elrejtésére.</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">inline</td>
+              <td style="border:1px solid #000; padding:4px;">
+                inline int f(int x)<br>
+                static inline …
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                A fordító a hívás helyére másolhatja a kódot,<br>
+                így nincs hívási költség (ha akarja).
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                Kis, gyakori<br>függvényekhez;<br>
+                static inline‐t válassz,<br>
+                ha nem kell külső<br>szimbólum.
+              </td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">const</td>
+              <td style="border:1px solid #000; padding:4px;">int f(const char *p)</td>
+              <td style="border:1px solid #000; padding:4px;">
+                A paraméter/visszatérő<br>
+                adat nem módosítható.<br>
+                Magát a függvényt nem „rögzíti”.
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                Tedd oda, ahol<br>
+                meg akarod tiltani<br>
+                az írást a hívónak vagy<br>
+                a függvénynek.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </small>
+      </div>
+  </section>
+  <!--55. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>55.	Ismertesse a formális és aktuális paraméter fogalmát a C nyelv függvényeinél!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out">
+        <table style="font-size:90%; border:1px solid #000; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="border:1px solid #000; padding:4px;">Fogalom</th>
+              <th style="border:1px solid #000; padding:4px;">Hol jelenik meg?</th>
+              <th style="border:1px solid #000; padding:4px;">Mi tárolódik?</th>
+              <th style="border:1px solid #000; padding:4px;">Élettartam</th>
+              <th style="border:1px solid #000; padding:4px;">Példa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">
+                Formális paraméter<br>
+                <small>(formal parameter, paraméter-név)</small>
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                A függvény deklarációjában / definíciójában<br>
+                <code>void swap(int *a, int *b)</code>
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                Azonosító + típus – a függvény belső változója
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                A függvény hívásának idejére automatikus tárhelyen<br>
+                (stack frame)
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                <code>int *a, int *b</code> a swap törzsén belül
+              </td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #000; padding:4px;">
+                Aktuális (valós) paraméter<br>
+                <small>(actual parameter, argumentum)</small>
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                A hívó oldalon<br>
+                <code>swap(&x, &y);</code>
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                Bármilyen kifejezés értéke vagy címe, amelyet a fordító átad
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                A hívó kódrészlet saját élettartama szerint
+              </td>
+              <td style="border:1px solid #000; padding:4px;">
+                <code>&x, &y</code> a swap hívásában
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </small>
+      </div>
+  </section>
+  <!--56. Vizsgakérdés -->
+  <section>
+    <h2>Vizsga kérdések</h2>
+    <h6>56.	Milyen paraméter-átadást használ a C nyelv? Hogyan tudja megváltoztatni a függvény a paraméterei értékét úgy, hogy a hívó folyamatban is a változtatott érték szerepeljen?</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out"> ...</small>
+      </div>
+  </section>
+  <!--57. Vizsgakérdés -->
+  <section>
 
-        <small><br><br>(releváns kiegészítés: cache lineok 64 byteosak...)</small>
-      </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <pre><code class="language-c" data-trim data-line-numbers>
-        #include &lt;stdio.h&gt;
-        #include &lt;time.h&gt;
-                
-        int main(void) {
-        clock_t start, stop;    double elteltIdo;
-                
-        start = clock();          // mérés kezdete   
-                    // … Itt van a mérendő kódrész      
-        stop  = clock();          // mérés vége
-        elteltIdo = (double)(stop - start) / CLOCKS_PER_SEC;
-        printf("Eltelt idő: %.6f s\n", elteltIdo);
-                
-        return 0;
-        }                
-        </code></pre>
-      </section>  
-      <section><h2>Teljesítménymérés</h2>
-        <h3>Compiler</h3>
-        <small>Olyan program, amely egy "magas szintű" forrás­nyelvű (pl. C) kódot gépi kódra (vagy köztes formára) alakít át. <br>Röviden:<br><br></small>
-        <div>Elemzés
-            <small>– Lexikai elemzés: tokenekre bontja a szöveget („szavak”, operátorok).<br>
-              – Szintaktikai/ szemantikai elemzés: fába építi a szerkezetet (AST), ellenőrzi a nyelvtant és típusokat.<br><br></small>
-        </div>
-        <div>Optimalizáció 
-            <small>– A köztes reprezentációt (IR) megtisztítja és átalakítja: felesleges kód eltávolítása, ciklusok, függvények hatékonyabbra alakítása.<br><br>
-            </small>
-        </div>
-        <div>Kódgenerálás 
-            <small>– A CPU‐ra és architektúrára (regiszterek, utasításkészlet) szabott gépi kódot állít elő.
-              <br>– Gyakran assembler‐forrásként írja ki, amit a linkerrel összeragaszt az objektumokkal és könyvtárakkal.
-            </small>
-        </div>
-      </section>
-      <section><h2>Teljesítménymérés</h2>
-        <p>De mégis minek?</p>
-        <div>Bottleneck azonosítása
-            <small>– Megmutatja, hogy a program mely részei a leglassabbak (pl. I/O vs. számítás).
-            </small>
-        </div>
-        <div>Algoritmus­választás validálása 
-            <small>– Összehasonlíthatod, hogy egy új algoritmus (O(n²) vs. O(n log n)) tényleg gyorsabb-e adott adatmennyiség mellett.<br><br>
-            </small>
-        </div>
-        <div>Optimalizáció hatékonysága
-            <small>– Compiler-optimizációk (-O2, -O3, LTO), ciklusszerkezet-átírások,<br> inline-ok, branch-pred­iction hintek hatását objektíven mérheted.<br><br>
-            </small>
-        </div>
-        <div>Erőforrás-korlátok betartása
-            <small>– Beágyazott rendszerekben vagy valós idejű alkalmazásokban elengedhetetlen tudni,<br>hogy mennyi CPU-ciklust, memóriát, I/O-időt használ a kód.
-            </small>
-        </div>
-      </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <p>Compiler optimalizáció beállítás VS 2022-ben</p>
-        <div class="r-stack">
-          <img src="./img/screen1.png" class="fragment">
-          <img src="./img/screen2.png" width="300" height="600" class="fragment">
-          <img src="./img/screen3.png" width="800" height="600" class="fragment">
-        </div>
-      </section>
+    <h2>Vizsga kérdések</h2>
+    <h6>57.	Ismertesse a lokális és globális változó fogalmakat!</h6>
+    <div class="r-stack">
+      <small class="fragment fade-in-then-out"> ...</small>
+    </div>
+  </section>
+<!--Bináris fileok -->
+<section><h2>Bináris fileok</h2>
+  <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.75em; line-height:1.2;">
+        <thead>
+          <tr>
+            <th style="border:1px solid #ccc; padding:4px;">Előny</th>
+            <th style="border:1px solid #ccc; padding:4px;">Rövid indok</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border:1px solid #ccc; padding:4px;">Kompakt</td>
+            <td style="border:1px solid #ccc; padding:4px;">
+              A puszta bájtokat írjuk ki, nincs karakter-kódolási többlet<br>
+              (pl. 0x00–0xFF mind engedélyezett).
+            </td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ccc; padding:4px;">Gyors I/O</td>
+            <td style="border:1px solid #ccc; padding:4px;">
+              A lemezen is, a memóriában is byte-pontos másolat;<br>
+              nincs parse-olás, konverzió.
+            </td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ccc; padding:4px;">Strukturált</td>
+            <td style="border:1px solid #ccc; padding:4px;">
+              Tetszőleges rekord-/tömörtáblázat-elrendezés; csak a te programod tudja a „térképet”,<br>
+              ezért nehezebb véletlenül vagy rosszindulatúan módosítani.
+            </td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ccc; padding:4px;">Hardver-közeli</td>
+            <td style="border:1px solid #ccc; padding:4px;">
+              Firmware-, képcímtár-, hálózati csomag- vagy mentett játékállás-fájl ugyanazzal a<br>
+              memóriaképpel dolgozik.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </table>
+</section>
+<section>
+  <h2>Bináris fileok</h2>
+  <p>Egyszerű írási példa</p>
+  <pre><code class="language-c" data-trim data-line-numbers>
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+
+struct Record {            /* 12 bájt fix */
+    uint32_t id;  float    value; /*4+4*/
+    uint8_t  flag, pad[3];/*1+3, 4 bytera igazítás miatt pad*/
+};
+
+int main(void) {
+    struct Record rec = { 42, 3.14f, 1 };
+    FILE *f = fopen("data.bin", "wb");   /* b = binary */
+    fwrite(&rec, sizeof rec, 1, f);             fclose(f);
+    return 0;
+}
+  </code></pre>
+</section> 
+<section>
+  <h2>Bináris fileok</h2>
+  <p>Egyszerű olvasási példa</p>
+  <pre><code class="language-c" data-trim data-line-numbers>
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+struct Record {...};
+
+int main(void) {
+  FILE *f = fopen("data.bin", "rb");
+  struct Record rec;
+  if (fread(&rec, sizeof rec, 1, f) == 1) {
+      printf("id=%u  value=%f  flag=%u\n",
+              rec.id, rec.value, rec.flag);
+  }
+  fclose(f);
+  return 0;
+  } 
+  </code></pre>
+</section>           
+<section><h2>Bináris fileok</h2>
+  <p>data.bin hexadecimálisan</p>
+  <pre><code class="" data-trim data-line-numbers>
+      00000000  2A 00 00 00  C3 F5 48 40  01 00 00 00
+
+  </code></pre>
+  <small>A legtöbb processzor azt feltételezi, hogy egy 4-bájtos (uint32_t, float) mező címe 4-es többszörös (például 0x1000, 0x1004, 0x1008 stb.).</small>
+
+  <small>Ha a flag után nem tennénk be a 3 bájt padding-et, akkor a következő uint32_t vagy float mező nem lenne 4-re igazítva, és az ilyen „unaligned” memóriacímeken történő olvasás-írás több dolgot jelenthet:</small>
+  <small></small>
+  <small>
+    Lassabb lesz, mert a CPU kénytelen két memóriacímről összeollózni a teljes 4 bájtodat, vagy extra mikro­utasításokat futtatni.</small>
+  <small>Egyes architektúrákon hiba, sőt kivétel keletkezik unaligned hozzáférésnél (pl. néhány beágyazott CPU-n, vagy ARM-on, ha nem konfigurálod).</small>
+
+  <small><br><br>(releváns kiegészítés: cache lineok 64 byteosak...)</small>
+</section>
+<!-- Teljesítménymérés -->
+<section>
+  <h2>Teljesítménymérés</h2>
+  <pre><code class="language-c" data-trim data-line-numbers>
+  #include &lt;stdio.h&gt;
+  #include &lt;time.h&gt;
+          
+  int main(void) {
+  clock_t start, stop;    double elteltIdo;
+          
+  start = clock();          // mérés kezdete   
+              // … Itt van a mérendő kódrész      
+  stop  = clock();          // mérés vége
+  elteltIdo = (double)(stop - start) / CLOCKS_PER_SEC;
+  printf("Eltelt idő: %.6f s\n", elteltIdo);
+          
+  return 0;
+  }                
+  </code></pre>
+</section>  
+<section><h2>Teljesítménymérés</h2>
+  <h3>Compiler</h3>
+  <small>Olyan program, amely egy "magas szintű" forrás­nyelvű (pl. C) kódot gépi kódra (vagy köztes formára) alakít át. <br>Röviden:<br><br></small>
+  <div>Elemzés
+      <small>– Lexikai elemzés: tokenekre bontja a szöveget („szavak”, operátorok).<br>
+        – Szintaktikai/ szemantikai elemzés: fába építi a szerkezetet (AST), ellenőrzi a nyelvtant és típusokat.<br><br></small>
+  </div>
+  <div>Optimalizáció 
+      <small>– A köztes reprezentációt (IR) megtisztítja és átalakítja: felesleges kód eltávolítása, ciklusok, függvények hatékonyabbra alakítása.<br><br>
+      </small>
+  </div>
+  <div>Kódgenerálás 
+      <small>– A CPU‐ra és architektúrára (regiszterek, utasításkészlet) szabott gépi kódot állít elő.
+        <br>– Gyakran assembler‐forrásként írja ki, amit a linkerrel összeragaszt az objektumokkal és könyvtárakkal.
+      </small>
+  </div>
+</section>
+<section><h2>Teljesítménymérés</h2>
+  <p>De mégis minek?</p>
+  <div>Bottleneck azonosítása
+      <small>– Megmutatja, hogy a program mely részei a leglassabbak (pl. I/O vs. számítás).
+      </small>
+  </div>
+  <div>Algoritmus­választás validálása 
+      <small>– Összehasonlíthatod, hogy egy új algoritmus (O(n²) vs. O(n log n)) tényleg gyorsabb-e adott adatmennyiség mellett.<br><br>
+      </small>
+  </div>
+  <div>Optimalizáció hatékonysága
+      <small>– Compiler-optimizációk (-O2, -O3, LTO), ciklusszerkezet-átírások,<br> inline-ok, branch-pred­iction hintek hatását objektíven mérheted.<br><br>
+      </small>
+  </div>
+  <div>Erőforrás-korlátok betartása
+      <small>– Beágyazott rendszerekben vagy valós idejű alkalmazásokban elengedhetetlen tudni, hogy mennyi CPU-ciklust, memóriát, I/O-időt használ a kód.
+      </small>
+  </div>
+</section>
+<section>
+  <h2>Teljesítménymérés</h2>
+  <p>Compiler optimalizáció beállítás VS 2022-ben</p>
+  <div class="r-stack">
+    <img src="./img/screen1.png" width="500" height="550" class="fragment">
+    <img src="./img/screen2.png" width="250" height="450" class="fragment">
+    <img src="./img/screen3.png" width="800" height="600" class="fragment">
+  </div>
+</section>
       <section>
         <h2>Teljesítménymérés</h2>
         <p>VS 2022 optimalizációs opciók</p>
         <div style="overflow-x:auto;">
-          <table style="width:100%; border-collapse:collapse; font-size:0.7em; line-height:1.1; margin:0;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.65em; line-height:1.1; margin:0;">
             <thead>
               <tr>
                 <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Beállítás</th>
@@ -1496,161 +1511,223 @@ int sum = op(2,3);       // indirekt hívás
           </table>
         </div>
       </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <h3>Favor size vs favor speed</h3>
-        <p>/O1 - Size</p>
-        <small>Kis bináris méret: a fordító igyekszik minimalizálni a kód méretét, kevesebb inline-olás és loop-unrolling, egyszerűbb utasítások.
-          <br>
-          Cache-barát: kisebb kód jobb I-cache használat, kevesebb memóriafoglalás jut a programra.
-          <br>
-          Gyors fordítás: kevesebb optimalizáció → rövidebb compile-idő.</small>
-          <p>/O2 - Speed</p>
-          <small>Gyors futás: agresszívebb inlining, loop-unrolling, konstans-propagáció, elágazás-átalakítás stb.
-            <br>
-            Nagyobb kód: több másolat és többlépéses transzformáció a gyorsabb végrehajtás érdekében.
-            <br>
-            Hosszabb fordítás: több optimalizációs lépés → hosszabb compile-idő.</small>
-      </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <h3>Optimalizáció</h3>
-        <p>Inlining</p>
-        <small>A fordító a függvényhívás helyére közvetlenül beírja a hívott függvény törzsét, így
+<section>
+  <h2>Teljesítménymérés</h2>
+  <p>VS 2022 optimalizációs opciók</p>
+  <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.65em; line-height:1.1; margin:0;">
+      <thead>
+        <tr>
+          <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Beállítás</th>
+          <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Parancssori jelző</th>
+          <th style="border:1px solid #ccc; padding:2px 4px; text-align:left;">Mire jó?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Disabled</td>
+          <td style="border:1px solid #ccc; padding:2px 4px;"><code>/Od</code></td>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Minden optimalizáció kikapcsolva → gyorsabb fordítás és könnyebb hibakeresés (debug).</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Maximum Optimization (Favor Size)</td>
+          <td style="border:1px solid #ccc; padding:2px 4px;"><code>/O1</code></td>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Kisebb bináris méret előnyben → memória- és cache-igény csökkentése.</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Maximum Optimization (Favor Speed)</td>
+          <td style="border:1px solid #ccc; padding:2px 4px;"><code>/O2</code></td>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Gyorsabb futás előnyben → inlining, loop-unrolling, konstans-propagáció stb.</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Optimizations (+Favor Speed)</td>
+          <td style="border:1px solid #ccc; padding:2px 4px;"><code>/Ox</code></td>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Teljes <code>/O2</code> plusz extra makró-inlining, frame-pointer eltávolítás, gyorsciklus-utak.</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Custom</td>
+          <td style="border:1px solid #ccc; padding:2px 4px;">—</td>
+          <td style="border:1px solid #ccc; padding:2px 4px;">Egyéni <code>/Ob</code>, <code>/GF</code>, <code>/GS</code> stb. flag-ek a Command Line fülön.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section>
+  <h2>Teljesítménymérés</h2>
+  <h3>Favor size vs favor speed</h3>
+  <p>/O1 - Size</p>
+  <small>Kis bináris méret: a fordító igyekszik minimalizálni a kód méretét, kevesebb inline-olás és loop-unrolling, egyszerűbb utasítások.
+    <br>
+    Cache-barát: kisebb kód jobb I-cache használat, kevesebb memóriafoglalás jut a programra.
+    <br>
+    Gyors fordítás: kevesebb optimalizáció → rövidebb compile-idő.</small>
+    <p>/O2 - Speed</p>
+    <small>Gyors futás: agresszívebb inlining, loop-unrolling, konstans-propagáció, elágazás-átalakítás stb.
+      <br>
+      Nagyobb kód: több másolat és többlépéses transzformáció a gyorsabb végrehajtás érdekében.
+      <br>
+      Hosszabb fordítás: több optimalizációs lépés → hosszabb compile-idő.</small>
+</section>
+<section>
+  <h2>Teljesítménymérés</h2>
+  <h3>Optimalizáció</h3>
+  <p>Inlining</p>
+  <small>A fordító a függvényhívás helyére közvetlenül beírja a hívott függvény törzsét, így
 
-          elmarad a call/ret overhead,
-          
-          több optimalizáció jöhet létre a „lapított” kódban,
-          de nagyobb lehet a bináris méret.</small>
-      </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <h3>Optimalizáció</h3>
-        <p>Loop-unrolling</p>
-        <pre><code class="language-c" data-trim data-line-numbers>
-          // Eredeti
-          for(i=0; i&lt;100; ++i) sum += a[i];
-          
-          // 4× unrolled
-          for(i=0; i&lt;100; i+=4) {
-            sum += a[i];
-            sum += a[i+1];
-            sum += a[i+2];
-            sum += a[i+3];
-          }
-          
-            </code></pre>
-        <small>Egy for- vagy while-ciklus testét többszörösen egymás után másolja a fordító, például 4-szeresével, így kevesebb a ciklusfej-ellenőrzés és ugrás</small>      </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <h3>Optimalizáció</h3>
-        <p>Konstans-propagáció</p>
-        <pre><code class="language-c" data-trim data-line-numbers>
-          int x = 3;
-          int y = x * 5 + 2;  // fordításkor -> int y = 17;          
-            </code></pre>
-        <small>Ha egy változó értéke fordítási időben ismert konstans, akkor a fordító a kifejezésekben helyettesíti azt, és kiszámolja előre:</small>
-      </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <h3>Optimalizáció</h3>
-        <p>Elágazás-átalakítás</p>
-        <h6>Branch-unswitching</h6>
-        <small>Ha egy cikluson belül van egy if, amit a ciklus feltétele előre ismert, akkor az if-et kiviszi a ciklusból, és két külön ciklust generál:</small>
-        <pre>
-          <code class="language-c" data-trim data-line-numbers>
-            for (…) {
-              if (flag) { bodyA; } else { bodyB; }
-            }                    
-          </code>
-        </pre>
-        <small>↓</small>
-        <pre>
-          <code class="language-c" data-trim data-line-numbers>
-            if (flag) for (…) bodyA;
-            else      for (…) bodyB;                            
-          </code>
-        </pre>
-      </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <h3>Optimalizáció</h3>
-        <p>Elágazás-átalakítás</p>
-        <h6>Branch-fusion / coalescing</h6>
-        <small>Közeli, hasonló feltételeket egyesít, hogy kevesebb ugrás legyen.
-        </small>
-        <pre>
-          <code class="language-c" data-trim data-line-numbers>
-            // Eredeti:
-            if (cond) {
-                x = foo();
-            }
-            if (cond) {
-                y = bar();
-            }
-            // Optimált (branch-fusion):
-            if (cond) {
-                x = foo();
-                y = bar();
-            }                               
-          </code>
-        </pre>
-      </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <h3>Optimalizáció</h3>
-        <p>Elágazás-átalakítás</p>
-        <h6>Branch-prediction hint</h6>
-        <small>A GCC/Clang esetén a __builtin_expect megmondja a fordítónak (és így a branch-predictornak), hogy melyik ág a valószínűbb:
-        </small>
-        <pre>
-          <code class="language-c" data-trim data-line-numbers>
-            #include &lt;stdbool.h&gt;
+    elmarad a call/ret overhead,
+    
+    több optimalizáció jöhet létre a „lapított” kódban,
+    de nagyobb lehet a bináris méret.</small>
+</section>
+<section>
+  <h2>Teljesítménymérés</h2>
+  <h3>Optimalizáció</h3>
+  <p>Loop-unrolling</p>
+  <pre><code class="language-c" data-trim data-line-numbers>
+    // Eredeti
+    for(i=0; i&lt;100; ++i) sum += a[i];
+    
+    // 4× unrolled
+    for(i=0; i&lt;100; i+=4) {
+      sum += a[i];
+      sum += a[i+1];
+      sum += a[i+2];
+      sum += a[i+3];
+    }
+    
+      </code></pre>
+  <small>Egy for- vagy while-ciklus testét többszörösen egymás után másolja a fordító, például 4-szeresével, így kevesebb a ciklusfej-ellenőrzés és ugrás</small>      </section>
+<section>
+  <h2>Teljesítménymérés</h2>
+  <h3>Optimalizáció</h3>
+  <p>Konstans-propagáció</p>
+  <pre><code class="language-c" data-trim data-line-numbers>
+    int x = 3;
+    int y = x * 5 + 2;  // fordításkor -> int y = 17;          
+      </code></pre>
+  <small>Ha egy változó értéke fordítási időben ismert konstans, akkor a fordító a kifejezésekben helyettesíti azt, és kiszámolja előre:</small>
+</section>
+<section>
+  <h2>Teljesítménymérés</h2>
+  <h3>Optimalizáció</h3>
+  <p>Elágazás-átalakítás</p>
+  <h6>Branch-unswitching</h6>
+  <small>Ha egy cikluson belül van egy if, amit a ciklus feltétele előre ismert, akkor az if-et kiviszi a ciklusból, és két külön ciklust generál:</small>
+  <pre>
+    <code class="language-c" data-trim data-line-numbers>
+      for (…) {
+        if (flag) { bodyA; } else { bodyB; }
+      }                    
+    </code>
+  </pre>
+  <small>↓</small>
+  <pre>
+    <code class="language-c" data-trim data-line-numbers>
+      if (flag) for (…) bodyA;
+      else      for (…) bodyB;                            
+    </code>
+  </pre>
+</section>
+<section>
+  <h2>Teljesítménymérés</h2>
+  <h3>Optimalizáció</h3>
+  <p>Elágazás-átalakítás</p>
+  <h6>Branch-fusion / coalescing</h6>
+  <small>Közeli, hasonló feltételeket egyesít, hogy kevesebb ugrás legyen.
+  </small>
+<pre style="
+  font-size: 0.5em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: hidden;
+  margin: 0 auto;
+  max-width: 100%;
+">
+  <code class="language-c" data-trim data-line-numbers style="
+    white-space: pre-wrap;
+    word-break: break-word;
+  ">
+// Eredeti:
+if (cond) {
+    x = foo();
+}
+if (cond) {
+    y = bar();
+}
+// Optimált (branch-fusion):
+if (cond) {
+    x = foo();
+    y = bar();
+}
+  </code>
+</pre>
 
-              int process(int v, bool flag) {
-                  // Hint: feltételezzük, hogy flag gyakrabban igaz
-                  if (__builtin_expect(flag, 1)) {
-                      // gyorsabb út, előnyben
-                      return v * 2;
-                  } else {
-                      return v + 1;
-                  }
-              }                                          
-          </code>
-        </pre>
-        <small>GCC fordító WSL-en (Windows Subsystem for Linux) belül telepíthető, VS 2022-ben MSVC van...
-        </small>
-      </section>
-      <section>
-        <h2>Teljesítménymérés</h2>
-        <h3>Optimalizáció</h3>
-        <p>Elágazás-átalakítás</p>
-        <h6>Speculatív átalakítás</h6>
-        <small>A fordító előre végrehajt egy lassú műveletet, majd csak az ág vizsgálata után használja az eredményt:
-        </small>
-        <pre>
-          <code class="language-c" data-trim data-line-numbers>
-            // Eredeti:
-            if (idx &lt; N) {
-                result = array[idx] * 10;
+</section>
+<section>
+  <h2>Teljesítménymérés</h2>
+  <h3>Optimalizáció</h3>
+  <p>Elágazás-átalakítás</p>
+  <h6>Branch-prediction hint</h6>
+  <small>A GCC/Clang esetén a __builtin_expect megmondja a fordítónak (és így a branch-predictornak), hogy melyik ág a valószínűbb:
+  </small>
+  <pre>
+    <code class="language-c" data-trim data-line-numbers>
+      #include &lt;stdbool.h&gt;
+
+        int process(int v, bool flag) {
+            // Hint: feltételezzük, hogy flag gyakrabban igaz
+            if (__builtin_expect(flag, 1)) {
+                // gyorsabb út, előnyben
+                return v * 2;
+            } else {
+                return v + 1;
             }
-            
-            // Optimált (speculatív hoisting + mask):
-            {
-                int tmp = array[idx] * 10;  // mindig végrehajtjuk
-                if (idx &lt; N)
-                    result = tmp;
-                // ha idx&gt;=N, tmp kiszámolása kidobódik
-            }                                                     
-          </code>
-        </pre>
-      </section>
-      <section>
-        <img 
-      src="./img/khabib_gif1.gif" 
-      alt="Példa animáció" 
-      style="max-width:100%; height:360px;">
-      </section>
+        }                                          
+    </code>
+  </pre>
+  <small>GCC fordító WSL-en (Windows Subsystem for Linux) belül telepíthető, VS 2022-ben MSVC van...
+  </small>
+</section>
+<section>
+  <h2>Teljesítménymérés</h2>
+  <h3>Optimalizáció</h3>
+  <p>Elágazás-átalakítás</p>
+  <h6>Speculatív átalakítás</h6>
+  <small>A fordító előre végrehajt egy lassú műveletet, majd csak az ág vizsgálata után használja az eredményt:
+  </small>
+  <pre style="
+  font-size: 0.5em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: hidden;
+  margin: 0 auto;
+  max-width: 100%;
+">
+    <code class="language-c" data-trim data-line-numbers>
+      // Eredeti:
+      if (idx &lt; N) {
+          result = array[idx] * 10;
+      }
+      
+      // Optimált (speculatív hoisting + mask):
+      {
+          int tmp = array[idx] * 10;  // mindig végrehajtjuk
+          if (idx &lt; N)
+              result = tmp;
+          // ha idx&gt;=N, tmp kiszámolása kidobódik
+      }                                                     
+    </code>
+  </pre>
+</section>
+<!-- 1. Szünet (Khabib animáció) -->
+<section>
+  <img 
+src="./img/khabib_gif1.gif" 
+alt="Példa animáció" 
+style="max-width:100%; height:360px;">
+</section>
+<!-- Programtervezés, kódszervezés -->
       <section>
         <h2>C programteverzés, kódszervezés</h2>
       </section>
@@ -1665,20 +1742,12 @@ int sum = op(2,3);       // indirekt hívás
           <br>
         </small>
         <h6>Mi a kimenet?</h6>
-        <small>– Pontosan mi az elvárt eredmény, milyen formátumban, és hogyan lesz felhasználva?</small>
+        <small>– Pontosan mi az elvárt eredmény, milyen formátumban, és hogyan lesz felhasználva?<br><br></small>
         <h6>Analóg problémák/újrahasznosítás</h6>
         <small>– Van-e már meglévő kódunk pl. gyakorlásból, esetleg könyvtár, amit be tudunk építeni?
           <br>
           - Copy-Paste: pl. Nem kell fejből tudni a file megnyitás szintaktikáját.
         </small>          <br>
-        <br>
-
-        <h6>Papír-ceruza</h6>
-        <small>– Legalább a program lépéseit írjuk le.
-          <br>
-          - Sokkal gyorsabb, praktikusabb pl. hosszú matematikai levezetések, operációk
-          <br>
-          - Rendezgetni a kódunkat sokkal nyűgösebb, mint egy papírra vetett kézi vázlatot végigprogramozni
         </small>
       </section>
       <section>
@@ -1688,9 +1757,9 @@ int sum = op(2,3);       // indirekt hívás
           <h5><br>A kurzus során többnyire:</h5>
           - Keresés: lineáris, bináris, "jump-search"<br>
           <br>
-          - Rendezés: buborék, "quick-sort", "merge-sort", "heap-sort"<br>
+          - Rendezés: buborék ("quick-sort", "merge-sort", "heap-sort")<br>
           <br>
-          - Numerikus algoritmusok: összegzések, rekurziók, eukleidészi, gyökkeresés, sorozatok, Gauss-elimináció, Monte-Carlo módszerek<br>
+          - Numerikus algoritmusok: összegzések, rekurziók, eukleidészi, gyökkeresés, sorozatok ("Gauss-elimináció", "Monte-Carlo módszerek")<br>
           <br>
           - Adatstruktúra-manipuláció: 1. beillesztés/törlés, jellemzően tömbök, többdimenziós tömbök<br>
           2. Sztring átalakító függvényeket ismerjük!
@@ -1721,12 +1790,9 @@ int sum = op(2,3);       // indirekt hívás
               Forrás- és fejlécfájlok: "globalis_valtozok.h", "fuggvenyek.h", "adatstrukturak.h" stb...<br><br>
 
               Static függvények és változók file‐scope‐on(haladó): <br>Ha egy függvényt vagy globális változót static kulcsszóval deklarálsz egy .c fájlban, nem lesz elérhető más fordítási egységből.<br>Így a modul belső segédfüggvényei, segédváltozói „láthatatlanok” kívülről.<br><br>
-
-              Opaqu​e Poin​ter (incomplete type) – absztrakt adattípus(haladó): Fejlécben csak előre deklarálsz egy struct‐ot anélkül, hogy felépítését elárulnád pl. civil.h, civil.c
             </small>            
           </div>
       </section>
-
        <section>
               <h2>C programteverzés, kódszervezés</h2>
               <h3>Modularizálás - incomplete type pl.</h3>
@@ -1865,16 +1931,17 @@ int sum = op(2,3);       // indirekt hívás
         <h3>Optimalizálás</h3>
         <small>slides elején...</small>
       </section>
-      <section>
-        <img 
-      src="./img/erd_gif1.gif" 
-      alt="Példa animáció" 
-      style="max-width:100%; height: 360px;;">
-      </section>
+<!-- 1. Szünet (ERD animáció) -->
+<section>
+  <img 
+src="./img/erd_gif1.gif" 
+alt="Példa animáció" 
+style="max-width:100%; height: 360px;;">
+</section>
 
 
     </div>
-  </div>
+</div>
 
   <!-- Lokális Reveal.js JS -->
   <script src="reveal.js"></script>
